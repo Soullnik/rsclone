@@ -3,11 +3,12 @@
   "version": "1.0.0",
   "description": "",
   "main": "index.js",
+  "proxy": "http://localhost:8080",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "format": "prettier --write src/**/*.ts{,x}",
     "lint": "tsc --noEmit && eslint src/**/*.ts{,x}",
-    "start": "webpack-dev-server --open",
+    "start": "webpack-cli serve --mode development open",
     "build": "webpack"
   },
   "repository": {
@@ -49,6 +50,7 @@
   "dependencies": {
     "@types/jest": "^26.0.20",
     "@types/node": "^14.14.20",
+    "express": "^4.17.1",
     "firebase": "^8.2.1",
     "react": "^17.0.1",
     "react-dom": "^17.0.1"

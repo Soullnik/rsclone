@@ -12,6 +12,9 @@ module.exports = {
   resolve: {
     extensions: [".js", ".jsx", ".json", ".ts", ".tsx"],
   },
+  devServer: {
+    open: true
+  },
   module: {
     rules: [
       {
