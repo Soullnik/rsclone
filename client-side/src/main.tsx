@@ -1,8 +1,10 @@
 import * as React from "react";
 import * as ReactDOM from "react-dom";
-import { App } from "./components/App";
+import App from "./components/app";
+
+import './styles/index.scss'
 
 ReactDOM.render(
-  <App userName="Developer" lang="TypeScript" />,
-  document.getElementById("output")
+  <App/>,
+  document.getElementById("root")
 );
