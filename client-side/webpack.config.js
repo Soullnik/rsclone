@@ -54,7 +54,6 @@ module.exports = {
   },
   plugins: [
     new HtmlWebpackPlugin({
-      buildTime: new Date().toDateString(),
       template: path.resolve(__dirname, "public", "index.html"),
     }),
     new MiniCssExtractPlugin({
