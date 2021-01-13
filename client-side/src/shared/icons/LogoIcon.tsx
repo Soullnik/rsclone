@@ -1,12 +1,15 @@
 import React from 'react';
+import './Logo.scss';
 
 interface Props {
   fill?: string;
   size?: number;
+  className?: string;
 }
 
-const LogoIcon = ({ fill = '#61DAFB', size = 32 }: Props) => (
+const LogoIcon = ({ fill = '#61DAFB', size = 120, className }: Props) => (
   <svg
+    className={className}
     xmlns="http://www.w3.org/2000/svg"
     height={size}
     width={(size * 595.3) / 841.9}
@@ -15,8 +18,8 @@ const LogoIcon = ({ fill = '#61DAFB', size = 32 }: Props) => (
   >
     <g
       transform="translate(0.000000,358.000000) scale(0.100000,-0.100000)"
-      fill="#000000"
-      stroke="none"
+      fill="#ffffff"
+      stroke="blue"
     >
       <path
         d="M3342 1873 c3 -406 4 -430 23 -457 26 -40 72 -56 155 -56 l70 0 0 64
