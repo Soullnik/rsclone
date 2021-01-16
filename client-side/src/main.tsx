@@ -1,10 +1,9 @@
-import * as React from "react";
-import * as ReactDOM from "react-dom";
-import App from "./components/app";
+import React from 'react';
+import ReactDOM from 'react-dom';
+import Routes from './configs/routes';
+import './configs/i18n';
 
-import './styles/index.scss'
+import './main.scss';
 
-ReactDOM.render(
-  <App/>,
-  document.getElementById("root")
-);
+ReactDOM.render(<Routes />, document.getElementById('root'));
+
