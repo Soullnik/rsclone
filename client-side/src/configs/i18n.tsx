@@ -1,37 +1,29 @@
-import i18n from 'i18next';
-import { initReactI18next } from 'react-i18next';
+import i18n from "i18next";
+import detector from "i18next-browser-languagedetector";
+// import backend from "i18next-http-backend";
+import Backend from 'i18next-xhr-backend';
+import { initReactI18next } from "react-i18next";
 
-import * as en from '../locales/en';
 
-let translate: any;
-
-i18n.use(initReactI18next).init(
-  {
-    resources: {
-      en
-    },
+i18n
+  .use(detector)
+  .use(Backend)
+  .use(initReactI18next)
+  .init({
+    debug: true,
+ 
+    lng: 'en',
     fallbackLng: 'en',
-
-    // have a common namespace used around the full app
-    ns: ['translations'],
-    defaultNS: 'translations',
-
-    debug: false,
-
+    whitelist: ['en', 'ru'],
+ 
     interpolation: {
-      escapeValue: false // not needed for react!!
+      escapeValue: false,
+    },
+ 
+    backend: {
+      loadPath: '../locales/{{lng}}/{{ns}}.json',
     },
 
-    react: {
-      wait: true,
-      bindI18n: 'languageChanged loaded'
-    }
-  },
-  (err, t) => {
-    translate = t;
-  }
-);
-
-export { translate as t };
+  });
 
 export default i18n;
