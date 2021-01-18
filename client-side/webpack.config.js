@@ -1,18 +1,19 @@
-const path = require("path");
-const HtmlWebpackPlugin = require("html-webpack-plugin");
+const path = require('path');
+const HtmlWebpackPlugin = require('html-webpack-plugin');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
-const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin;
+const { CleanWebpackPlugin } = require('clean-webpack-plugin');
+const CopyPlugin = require('copy-webpack-plugin');
 
 module.exports = {
-  entry: "./src/main.tsx",
-  target: "web",
-  mode: "development",
+  entry: './src/main.tsx',
+  target: 'web',
+  mode: 'development',
   output: {
-    path: path.resolve(__dirname, "build"),
-    filename: "bundle.js",
+    path: path.resolve(__dirname, 'dist'),
+    filename: 'bundle.js',
   },
   resolve: {
-    extensions: [".js", ".jsx", ".json", ".ts", ".tsx"],
+    extensions: ['.js', '.jsx', '.json', '.ts', '.tsx'],
   },
   devServer: {
     open: true,
@@ -21,44 +22,64 @@ module.exports = {
     rules: [
       {
         test: /\.(ts|tsx)$/,
-        loader: "awesome-typescript-loader",
+        loader: 'awesome-typescript-loader',
         exclude: /node_modules/,
         options: {
           useBabel: true,
-          babelCore: "@babel/core",
+          babelCore: '@babel/core',
         },
       },
       {
-        enforce: "pre",
+        enforce: 'pre',
         test: /\.js$/,
-        loader: "source-map-loader",
-        exclude: /node_modules/
+        loader: 'source-map-loader',
+        exclude: /node_modules/,
       },
       {
         test: /\.s[ac]ss$/i,
-        use: [MiniCssExtractPlugin.loader, "css-loader", "sass-loader"],
+        use: [MiniCssExtractPlugin.loader, 'css-loader', 'sass-loader'],
       },
       {
         test: /\.(png|svg|jpg|gif|ico)$/,
         use: [
           {
-            loader: "file-loader",
+            loader: 'file-loader',
             options: {
               outputPath: 'images',
-              name: '[name]-[sha1:hash:7].[ext]'
-            }
+              name: '[name]-[sha1:hash:7].[ext]',
+            },
+          },
+        ],
+      },
+      {
+        test: /\.(json)$/,
+        type: 'javascript/auto',
+        use: [
+          {
+            loader: 'file-loader',
+            options: {
+              name: '[folder]/[name].[ext]',
+              outputPath: 'locales/',
+            },
           },
         ],
       },
     ],
   },
   plugins: [
+    new CleanWebpackPlugin(),
     new HtmlWebpackPlugin({
-      template: path.resolve(__dirname, "public", "index.html"),
+      template: path.resolve(__dirname, 'public', 'index.html'),
     }),
     new MiniCssExtractPlugin({
-      filename: 'main-[hash:8].css'
+      filename: 'main-[hash:8].css',
     }),
-    new BundleAnalyzerPlugin()
+    new CopyPlugin(
+      { 
+        patterns: [
+          { from: 'src/locales', to: 'locales' },
+        ]
+      }
+    )
   ],
 };
