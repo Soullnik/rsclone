@@ -1,23 +1,45 @@
 import React from 'react';
 import { useTranslation } from 'react-i18next';
-import { Menu } from 'antd';
-import LogoIcon from '../../shared/icons/LogoIcon';
+import { Layout, Menu, Dropdown, Button } from 'antd';
+import { GlobalOutlined } from '@ant-design/icons';
 
-import './styles.scss';
+const Header = () => {
+  const { t, i18n } = useTranslation();
+  const { Header } = Layout;
 
-const HeadeItems = () => {
-  const { t } = useTranslation('header');
+  const handleClick = (lang: string) => {
+    i18n.changeLanguage(lang);
+  };
+
+  const menu = (
+    <Menu>
+      <Menu.Item key="en" onClick={() => handleClick('en')}>
+        En
+      </Menu.Item>
+      <Menu.Item key="ru" onClick={() => handleClick('ru')}>
+        Ru
+      </Menu.Item>
+    </Menu>
+  );
 
   return (
-    <>
-      <LogoIcon fill="#b5683f" />
-      <Menu theme="dark" mode="horizontal" defaultSelectedKeys={['2']}>
-        <Menu.Item key="1">{t('title')}</Menu.Item>
-        <Menu.Item key="2">{t('title')}</Menu.Item>
-        <Menu.Item key="3">{t('title')}</Menu.Item>
-      </Menu>
-    </>
+    <Header style={{ padding: 16 }}>
+      <Dropdown overlay={menu} placement="bottomCenter">
+        <Button
+          style={{
+            float: 'right',
+            color: 'white',
+            border: 'none',
+            outline: 'none',
+            backgroundColor: 'rgba(0, 0, 0, 0.85)',
+          }}
+          icon={<GlobalOutlined />}
+        >
+          {t('len')}
+        </Button>
+      </Dropdown>
+    </Header>
   );
 };
 
-export default HeadeItems;
+export default Header;
