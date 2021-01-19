@@ -26,7 +26,7 @@ const App = () => {
                 <Switch>
                   {/* <Route path="/sign-in" render={() => <SignIn />} />
                   <Route path="/sign-up" render={() => <SignUp />} /> */}
-                  <Route name="massenger" exect path="/messenger" component={(props: JSX.IntrinsicAttributes & { children?: React.ReactNode; }) => <Messenger {...props} />} />
+                  <Route exect path="/messenger" render={() => <Messenger />} />
                   <Route path="/news" render={() => <News />} />
                   <Route path="/profile" render={() => <Profile />} />
                   <Route exact path="/" render={() => <Home />} />
