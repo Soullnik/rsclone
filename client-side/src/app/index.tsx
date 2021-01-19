@@ -1,8 +1,8 @@
 import React, { Suspense, lazy } from 'react';
-import { Switch, Route, BrowserRouter as Router } from 'react-router-dom';
-// import { ConnectedRouter } from 'connected-react-router';
+import { Switch, Route } from 'react-router-dom';
+import { ConnectedRouter } from 'connected-react-router';
 import { Provider } from 'react-redux';
-import { store } from '../redux/store';
+import store, { history } from '../redux/store';
 import { Spin, Layout } from 'antd';
 import { Header, Footer, Side } from '../layout';
 
@@ -16,9 +16,9 @@ const App = () => {
 
   return (
     <Provider store={store}>
-      <Layout style={{ minHeight: '100vh' }}>
-        <Suspense fallback={<Spin size="large" style={{ margin: 'auto' }} />}>
-          <Router basename="/">
+      <ConnectedRouter history={history}>
+        <Layout style={{ minHeight: '100vh' }}>
+          <Suspense fallback={<Spin size="large" style={{ margin: 'auto' }} />}>
             <Side />
             <Layout className="site-layout">
               <Header />
@@ -26,7 +26,7 @@ const App = () => {
                 <Switch>
                   {/* <Route path="/sign-in" render={() => <SignIn />} />
                   <Route path="/sign-up" render={() => <SignUp />} /> */}
-                  <Route exect path="/messenger" render={() => <Messenger />} />
+                  <Route path="/messenger" render={() => <Messenger />} />
                   <Route path="/news" render={() => <News />} />
                   <Route path="/profile" render={() => <Profile />} />
                   <Route exact path="/" render={() => <Home />} />
@@ -34,9 +34,9 @@ const App = () => {
               </Content>
               <Footer />
             </Layout>
-          </Router>
-        </Suspense>
-      </Layout>
+          </Suspense>
+        </Layout>
+      </ConnectedRouter>
     </Provider>
   );
 };
