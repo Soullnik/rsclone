@@ -9,8 +9,8 @@ module.exports = {
   target: 'web',
   mode: 'development',
   output: {
+    chunkFilename: '[name].chunk.js',
     path: path.resolve(__dirname, 'dist'),
-    filename: 'bundle.js',
   },
   resolve: {
     extensions: ['.js', '.jsx', '.json', '.ts', '.tsx'],
@@ -71,9 +71,7 @@ module.exports = {
     new HtmlWebpackPlugin({
       template: path.resolve(__dirname, 'public', 'index.html'),
     }),
-    new MiniCssExtractPlugin({
-      filename: 'main-[hash:8].css',
-    }),
+    new MiniCssExtractPlugin(),
     new CopyPlugin(
       { 
         patterns: [
@@ -82,4 +80,9 @@ module.exports = {
       }
     )
   ],
+  optimization: {
+    splitChunks: {
+        chunks: 'all'
+    }
+  }
 };
