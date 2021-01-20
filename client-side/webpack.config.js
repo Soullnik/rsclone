@@ -9,6 +9,7 @@ module.exports = {
   target: 'web',
   mode: 'development',
   output: {
+    filename: '[name].bundle.js',
     chunkFilename: '[name].chunk.js',
     path: path.resolve(__dirname, 'dist'),
   },
@@ -16,6 +17,7 @@ module.exports = {
     extensions: ['.js', '.jsx', '.json', '.ts', '.tsx'],
   },
   devServer: {
+    historyApiFallback: true,
     open: true,
   },
   module: {
