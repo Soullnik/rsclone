@@ -1,6 +1,6 @@
 import React from 'react';
 import { useTranslation } from 'react-i18next';
-import { Layout, Menu, Dropdown, Button } from 'antd';
+import { Layout, Menu, Dropdown } from 'antd';
 import { GlobalOutlined } from '@ant-design/icons';
 
 const Header = () => {
@@ -24,19 +24,11 @@ const Header = () => {
 
   return (
     <Header style={{ padding: 16 }}>
-      <Dropdown overlay={menu} placement="bottomCenter">
-        <Button
-          style={{
-            float: 'right',
-            color: 'white',
-            border: 'none',
-            outline: 'none',
-            backgroundColor: 'rgba(0, 0, 0, 0.85)',
-          }}
-          icon={<GlobalOutlined />}
-        >
-          {t('len')}
-        </Button>
+      <Dropdown overlay={menu} trigger={['hover']} placement="bottomCenter">
+        <div style={{ lineHeight: '0', float: 'right', color: 'white', cursor: 'pointer' }}>
+          <GlobalOutlined style={{ marginRight: '3px' }} />
+          <span style={{ userSelect: 'none' }}>{t('len')}</span>
+        </div>
       </Dropdown>
     </Header>
   );
