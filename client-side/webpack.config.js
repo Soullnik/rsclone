@@ -18,6 +18,7 @@ module.exports = {
     extensions: ['.js', '.jsx', '.json', '.ts', '.tsx'],
   },
   devServer: {
+    historyApiFallback: true,
     open: true,
   },
   module: {
@@ -83,3 +84,8 @@ module.exports = {
     },
   },
 };
+
+
+
+// filename: '[name].bundle.js',
+//     chunkFilename: '[name].chunk.js',
