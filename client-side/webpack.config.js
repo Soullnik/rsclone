@@ -9,13 +9,16 @@ module.exports = {
   target: 'web',
   mode: 'development',
   output: {
-    chunkFilename: '[name].chunk.js',
     path: path.resolve(__dirname, 'dist'),
+    filename: '[name].[hash:8].js',
+    sourceMapFilename: '[name].[hash:8].map',
+    chunkFilename: '[id].[hash:8].js',
   },
   resolve: {
     extensions: ['.js', '.jsx', '.json', '.ts', '.tsx'],
   },
   devServer: {
+    historyApiFallback: true,
     open: true,
   },
   module: {
@@ -30,10 +33,9 @@ module.exports = {
         },
       },
       {
-        enforce: 'pre',
         test: /\.js$/,
-        loader: 'source-map-loader',
-        exclude: /node_modules/,
+        enforce: 'pre',
+        use: ['source-map-loader'],
       },
       {
         test: /\.s[ac]ss$/i,
@@ -72,17 +74,18 @@ module.exports = {
       template: path.resolve(__dirname, 'public', 'index.html'),
     }),
     new MiniCssExtractPlugin(),
-    new CopyPlugin(
-      { 
-        patterns: [
-          { from: 'src/locales', to: 'locales' },
-        ]
-      }
-    )
+    new CopyPlugin({
+      patterns: [{ from: 'src/locales', to: 'locales' }],
+    }),
   ],
   optimization: {
     splitChunks: {
-        chunks: 'all'
-    }
-  }
+      chunks: 'all',
+    },
+  },
 };
+
+
+
+// filename: '[name].bundle.js',
+//     chunkFilename: '[name].chunk.js',
