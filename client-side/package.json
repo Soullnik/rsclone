@@ -6,7 +6,7 @@
   "scripts": {
     "start": "webpack-cli serve --mode development",
     "build": "webpack --mode production",
-    "deploy": "firebase deploy"
+    "deploy": "firebase deploy --only hosting"
   },
   "repository": {
     "type": "git",
