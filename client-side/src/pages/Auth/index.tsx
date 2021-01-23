@@ -13,14 +13,12 @@ type Props = {};
 const Auth: React.FC<Props> = () => {
   return (
     <div className="auth-form-container">
-      <Suspense fallback={<Spin size="small" style={{ margin: 'auto' }} />}>
         <Switch>
           <Route path="/login" component={LoginForm} />
           <Route path="/signup" component={SignupForm} />
           <Route path="/forgot" component={ForgotForm} />
           <Route path="/" component={LoginForm} />
         </Switch>
-      </Suspense>
     </div>
   );
 };

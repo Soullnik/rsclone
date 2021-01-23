@@ -1,5 +1,7 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useContext } from 'react';
 import { Form, Input, Button, Checkbox } from 'antd';
+import dataContext from '../../../context';
+import { actions } from '../../../reduxStore';
 
 import Icon from '@ant-design/icons';
 
@@ -8,24 +10,24 @@ import { Link } from 'react-router-dom';
 import './styles.scss';
 
 const LoginForm = () => {
+  const { dispatch } = useContext(dataContext);
   const [form] = Form.useForm();
 
-  useEffect(() => {
-    form.setFieldsValue({
-      username: '',
-      password: '',
-    });
-  }, []);
-
-  const onFinish = (values: any) => {
-    console.log('Received values of form: ', values);
+  const onFinish = (values: { email: string; password: string }) => {
+    actions.loginUser(values.email, values.password, dispatch);
   };
 
+  
+
   return (
-    <Form form={form} onFinish={onFinish} initialValues={{ username: '', password: '' }} className="login-form">
+    <Form
+      form={form}
+      onFinish={onFinish}
+      className="login-form"
+    >
       <h3 className="login-form__title">LOG IN</h3>
-      <Form.Item  name="email" rules={[{ required: true, message: 'Please add your email!' }]}>
-        <Input 
+      <Form.Item name="email" rules={[{ required: true, message: 'Please add your email!' }]}>
+        <Input
           type="email"
           prefix={<Icon type="user" style={{ color: 'rgba(0,0,0,.25)' }} />}
           placeholder="Email"
@@ -49,6 +51,5 @@ const LoginForm = () => {
     </Form>
   );
 };
-
 
 export default LoginForm;

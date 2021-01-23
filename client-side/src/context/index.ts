@@ -1,9 +1,8 @@
 import { createContext } from 'react';
+import { IReducerStates } from '../schemas/types';
 
 interface ContextProps {
-  state: {
-    users: Array<IUser>;
-  };
+  state: IReducerStates
   dispatch: React.Dispatch<{ type: string; payload: any }>;
 }
 

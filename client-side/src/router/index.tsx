@@ -1,21 +1,23 @@
-import React, { Suspense, lazy, Fragment } from 'react';
-import { Switch, Route } from 'react-router-dom';
-import { ConnectedRouter } from 'connected-react-router';
-import { history } from '../redux/store';
+import React, { Suspense, lazy, useContext } from 'react';
+import { BrowserRouter as Router } from 'react-router-dom';
+import dataContext from '../context';
+// import { ConnectedRouter } from 'connected-react-router';
 import { Spin, Layout } from 'antd';
 
 const Home = lazy(() => import('../pages/home'));
 const Auth = lazy(() => import('../pages/Auth'));
 
-const MainRouter = (props: any) => {
+const MainRouter = () => {
+  const { state } = useContext(dataContext);
+
   return (
-    <ConnectedRouter history={history}>
+    <Router>
       <Layout style={{ minHeight: '100vh' }}>
         <Suspense fallback={<Spin size="large" style={{ margin: 'auto' }} />}>
-          {props.auth ? <Home /> : <Auth />}
+          {state?.user ? <Home /> : <Auth />}
         </Suspense>
       </Layout>
-    </ConnectedRouter>
+    </Router>
   );
 };
 export default MainRouter;
