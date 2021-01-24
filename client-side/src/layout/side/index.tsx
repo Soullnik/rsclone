@@ -3,7 +3,7 @@ import { useTranslation } from 'react-i18next';
 import { Link } from 'react-router-dom';
 import { Layout, Menu } from 'antd';
 import { UserOutlined, MessageOutlined, ContainerOutlined } from '@ant-design/icons';
-import LogoIcon from '../../shared/icons/LogoIcon';
+import LogoIcon from '../../components/logo/LogoIcon';
 
 const { Sider } = Layout;
 

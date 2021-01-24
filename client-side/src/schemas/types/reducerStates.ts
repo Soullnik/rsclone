@@ -1,5 +1,6 @@
 import { TypeUser } from "./user";
 
-export type IReducerStates = {
-  user: TypeUser | undefined
+export type ReducerStates = {
+  user: TypeUser | undefined | null
+  loginError: boolean
 }

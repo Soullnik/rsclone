@@ -1,6 +1,6 @@
 import React, { useEffect, useContext } from 'react';
-import { actions } from '../../reduxStore';
-import dataContext from '../../context';
+// import { actions } from '../../redux';
+// import dataContext from '../../context';
 import { List } from 'antd';
 
 type Props = {};

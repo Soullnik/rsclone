@@ -1,0 +1,1 @@
+export {watchAuth} from './auth'

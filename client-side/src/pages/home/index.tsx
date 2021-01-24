@@ -16,8 +16,8 @@ const Home: React.FC = () => {
       <Side />
       <Layout className="site-layout">
         <Header />
-        <Content style={{ margin: '10px 16px' }}>
-          <Suspense fallback={<Spin size="small" style={{ margin: 'auto' }} />}>
+        <Content style={{ margin: '10px 16px', display: 'flex', flexDirection: 'column' }}>
+          <Suspense fallback={<Spin size='large' style={{ margin: 'auto' }} />}>
             <Switch>
               <Route path="/messenger" component={Messenger} />
               <Route path="/news" component={News} />
