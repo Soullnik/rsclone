@@ -1,52 +1,70 @@
 import { takeEvery, put, call } from 'redux-saga/effects';
-import { auth } from '../../../configs/configFirebase';
+import { confirmedSignIn, confirmedSignUp, confirmedSignOut, authDataAdd } from '../../../api/auth';
 import { authActions } from '../../actions';
 import { authType } from '../../actionsTypes';
+import { delay } from '../../../utils/helpers';
+
+const { SIGNIN_USER, SIGNUP_USER, SIGNOUT_USER } = authType;
 
 const {
-  SHOW_ALERT,
-  HIDE_ALERT,
-  SHOW_LOADING,
-  HIDE_LOADING,
-  SIGNIN_USER,
-  SIGNUP_USER,
-  SIGNOUT_USER,
-  FORGOT_USER,
-} = authType;
-
-const {
-  showAlert,
-  hideAlert,
-  showLoading,
-  hideLoading,
-  signIn,
-  signOut,
-  signUp,
-  forgot,
-  signInComplete
+  showAlertSuccess,
+  hideAlertSuccess,
+  showAlertError,
+  hideAlertError,
+  signInComplete,
+  signOutComplete,
 } = authActions;
 
-const delay = (ms: number) => {
-  return new Promise<void>((r) => setTimeout(() => r(), ms));
-};
-
-async function fetchData(action: any) {
-  const response = await auth.signInWithEmailAndPassword(action.email, action.password);
-  auth.onAuthStateChanged(() => {});
-  return response.user?.uid
-}
-
-function* warkerAuth({ payload }: any) {
+function* warkerSignUp({ payload }: any) {
   try {
-    const id = yield call(fetchData, payload);
-    yield put(signInComplete(id));
-  } catch (error) {
-    yield put(showAlert('Проверьте правильность введенных данных'));
+    const id = yield call(confirmedSignUp, payload);
+    yield call(authDataAdd, id, payload);
+    yield put(showAlertSuccess('Пользователь создан'));
     yield delay(3000);
-    yield put(hideAlert());
+    yield put(hideAlertSuccess());
+  } catch (error) {
+    yield put(showAlertError('Проверьте правильность введенных данных'));
+    yield delay(3000);
+    yield put(hideAlertError());
   }
 }
 
+function* warkerSignIn({ payload }: any) {
+  try {
+    const id = yield call(confirmedSignIn, payload);
+    yield localStorage.setItem('userId', id);
+    yield put(signInComplete(id));
+  } catch (error) {
+    yield put(showAlertError('Проверьте правильность введенных данных'));
+    yield delay(3000);
+    yield put(hideAlertError());
+  }
+}
+
+function* warkerSignOut() {
+  try {
+    yield localStorage.removeItem('userId');
+    yield call(confirmedSignOut);
+    yield put(signOutComplete());
+  } catch (error) {
+    console.log(error);
+  }
+}
+
+// function* warkerFargot({ payload }: any) {
+//   try {
+//     const id = yield call(confirmedSignIn, payload);
+//     yield put(signInComplete(id));
+//   } catch (error) {
+//     yield put(showAlert('Проверьте правильность введенных данных'));
+//     yield delay(3000);
+//     yield put(hideAlert());
+//   }
+// }
+
 export function* watchAuth() {
-  yield takeEvery(SIGNIN_USER, warkerAuth);
+  yield takeEvery(SIGNIN_USER, warkerSignIn);
+  yield takeEvery(SIGNUP_USER, warkerSignUp);
+  yield takeEvery(SIGNOUT_USER, warkerSignOut);
+  // yield takeEvery(FORGOT_USER, warkerFargot);
 }

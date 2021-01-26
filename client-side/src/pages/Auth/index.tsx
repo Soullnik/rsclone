@@ -1,5 +1,6 @@
 import React, { lazy } from 'react';
 import { Route, Switch } from 'react-router-dom';
+import Language from '../../components/language';
 
 import './style.scss';
 
@@ -12,6 +13,7 @@ type Props = {};
 const Auth: React.FC<Props> = () => {
   return (
     <div className="auth-form-container">
+      <Language className='auth-form-language'/>
       <Switch>
         <Route path="/login" component={LoginForm} />
         <Route path="/signup" component={SignupForm} />

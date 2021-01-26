@@ -1,5 +1,3 @@
-import type { TypeUser } from './user';
-import type { ReducerStates } from './reducerStates';
-import type { TypeLoginArguments } from './login';
-
-export type { TypeUser, TypeLoginArguments, ReducerStates };
+export type { TypeUser } from './user';
+export type { ReducerStates } from './reducerStates';
+export type { TypeValue } from './login';

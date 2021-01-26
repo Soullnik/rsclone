@@ -1,72 +1,79 @@
 import { authType } from '../../actionsTypes';
+import { Types } from '../..//../schemas';
 
 const {
-  SHOW_ALERT,
-  HIDE_ALERT,
-  SHOW_LOADING,
-  HIDE_LOADING,
+  SHOW_ALERT_SUCCESS,
+  HIDE_ALERT__SUCCESS,
+  SHOW_ALERT_ERROR,
+  HIDE_ALERT_ERROR,
   SIGNIN_USER,
   SIGNUP_USER,
   SIGNOUT_USER,
   FORGOT_USER,
-  SIGNIN_COMPLETE
+  SIGNIN_COMPLETE,
+  SIGNOUT_COMPLETE,
 } = authType;
 
-export const showAlert = (text: string) => {
+export const showAlertSuccess = (text: string) => {
   return {
-    type: SHOW_ALERT,
+    type: SHOW_ALERT_SUCCESS,
     payload: text,
   };
 };
 
-export const hideAlert = () => {
+export const hideAlertSuccess = () => {
   return {
-    type: HIDE_ALERT,
+    type: HIDE_ALERT__SUCCESS,
   };
 };
 
-export const showLoading = () => {
+export const showAlertError = (text: string) => {
   return {
-    type: SHOW_LOADING,
+    type: SHOW_ALERT_ERROR,
+    payload: text,
   };
 };
 
-export const hideLoading = () => {
+export const hideAlertError = () => {
   return {
-    type: HIDE_LOADING,
+    type: HIDE_ALERT_ERROR,
+  };
+};
+
+export const signIn = (values: Types.TypeValue) => {
+  return {
+    type: SIGNIN_USER,
+    payload: values,
+  };
+};
+
+export function signOut() {
+  return {
+    type: SIGNOUT_USER,
   };
 }
 
-export const signIn = (values: { email: string; password: string }) => {
+export function signUp(values: Types.TypeValue) {
   return {
-    type: SIGNIN_USER,
+    type: SIGNUP_USER,
     payload: values,
   };
 }
 
 export const signInComplete = (id: string) => {
-  localStorage.setItem('userId', id)
   return {
     type: SIGNIN_COMPLETE,
-    payload: id
+    payload: id,
   };
-}
+};
 
-export function signUp(data: any) {
+export const signOutComplete = () => {
   return {
-    type: SIGNUP_USER,
-    payload: data,
+    type: SIGNOUT_COMPLETE,
   };
-}
+};
 
-export function signOut(data: any) {
-  return {
-    type: SIGNOUT_USER,
-    payload: data,
-  };
-}
-
-export function forgot(values: { email: string; password: string }) {
+export function forgot(values: Types.TypeValue) {
   return {
     type: FORGOT_USER,
     payload: values,

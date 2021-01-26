@@ -1,41 +1,27 @@
 import { authType } from '../../actionsTypes';
 
 const initialState = {
-  loading: false,
-  alert: null,
-  check: false,
-  userId: localStorage.getItem("userId") || null,
+  alertSuccess: null,
+  alertError: null,
+  userId: localStorage.getItem('userId') || null,
 };
 
-const {
-  SHOW_ALERT,
-  HIDE_ALERT,
-  SHOW_LOADING,
-  HIDE_LOADING,
-  SIGNUP_USER,
-  SIGNOUT_USER,
-  FORGOT_USER,
-  SIGNIN_COMPLETE
-} = authType;
+const { SHOW_ALERT_SUCCESS, HIDE_ALERT__SUCCESS,SHOW_ALERT_ERROR,HIDE_ALERT_ERROR, SIGNOUT_COMPLETE, SIGNIN_COMPLETE } = authType;
 
 export const authReducer = (state = initialState, actions: { type: string; payload: any }) => {
   switch (actions.type) {
-    case SHOW_LOADING:
-      return { ...state, loading: true };
-    case HIDE_LOADING:
-      return { ...state, loading: false };
-    case SHOW_ALERT:
-      return { ...state, alert: actions.payload };
-    case HIDE_ALERT:
-      return { ...state, alert: null };
+    case SHOW_ALERT_SUCCESS:
+      return { ...state, alertSuccess: actions.payload };
+    case HIDE_ALERT__SUCCESS:
+      return { ...state, alertSuccess: null };
+    case SHOW_ALERT_ERROR:
+      return { ...state, alertError: actions.payload };
+    case HIDE_ALERT_ERROR:
+      return { ...state, alertError: null };
     case SIGNIN_COMPLETE:
-      return { ...state, check: true, userId: actions.payload };
-    case SIGNUP_USER:
-      return { ...state };
-    case SIGNOUT_USER:
-      return { ...state, check: false };
-    case FORGOT_USER:
-      return { ...state };
+      return { ...state, userId: actions.payload };
+    case SIGNOUT_COMPLETE:
+      return { ...state, userId: null };
     default:
       return state;
   }
