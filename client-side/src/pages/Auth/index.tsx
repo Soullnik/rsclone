@@ -1,5 +1,5 @@
 import React, { lazy } from 'react';
-import { Route, Switch } from 'react-router-dom';
+import { Redirect, Route, Switch } from 'react-router-dom';
 import Language from '../../components/language';
 
 import './style.scss';
@@ -18,7 +18,7 @@ const Auth: React.FC<Props> = () => {
         <Route path="/login" component={LoginForm} />
         <Route path="/signup" component={SignupForm} />
         <Route path="/forgot" component={ForgotForm} />
-        <Route path="/" component={LoginForm} />
+        <Redirect to="/login" />
       </Switch>
     </div>
   );

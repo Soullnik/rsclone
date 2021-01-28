@@ -1,22 +1,25 @@
 import React, { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Link } from 'react-router-dom';
-import { Layout, Menu } from 'antd';
+import { Layout, Menu, Grid } from 'antd';
 import { UserOutlined, MessageOutlined, ContainerOutlined } from '@ant-design/icons';
 import LogoIcon from '../../components/logo/LogoIcon';
 
 const { Sider } = Layout;
+const { useBreakpoint } = Grid;
 
 const Side = () => {
+  const screens = useBreakpoint();
   const { t } = useTranslation();
   const [collapsed, setCollapsed] = useState(false);
 
   const onCollapse = (collapsed: boolean) => {
     setCollapsed(collapsed);
   };
-
-  return (
-    <Sider collapsible collapsed={collapsed} onCollapse={onCollapse}>
+  return !screens.sm ? (
+    <div>MOBILE</div>
+  ) : (
+    <Sider onBreakpoint={(lg) => {if (lg)setCollapsed(collapsed)}} collapsed={collapsed} onCollapse={onCollapse}>
       <LogoIcon />
       <Menu theme="dark" mode="inline" defaultSelectedKeys={['1']}>
         <Menu.Item icon={<UserOutlined />} key="1">

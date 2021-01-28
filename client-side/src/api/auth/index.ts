@@ -10,9 +10,13 @@ type TypeSignUp = {
 };
 
 export async function confirmedSignIn(action: any) {
-  const response = await auth.signInWithEmailAndPassword(action.email, action.password);
-  auth.onAuthStateChanged(() => {});
-  return response.user?.uid;
+  try {
+    const response = await auth.signInWithEmailAndPassword(action.email, action.password);
+    auth.onAuthStateChanged(() => {});
+    return response.user?.uid;
+  } catch(error) {
+    return new Error(error);
+  }
 }
 
 export async function confirmedSignUp(action: TypeSignUp) {

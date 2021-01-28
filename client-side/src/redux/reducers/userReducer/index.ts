@@ -1,22 +1,45 @@
 import { userType } from '../../actionsTypes';
 
 const initialState = {
-  profile: null,
-  chats: null,
+  profile: {
+    firstName: null,
+    lastName: null,
+    age: null,
+    gender: null,
+    city: null,
+    about: null,
+    avatar: null
+  },
+  openChats: null,
+  closeChats: null,
+  audio: [],
+  images: [],
 };
 
-// const { SHOW_ALERT, HIDE_ALERT, SHOW_LOADING, HIDE_LOADING } = userType;
+const {
+  GET_CLOSE_CHATS_DATA,
+  GET_OPEN_CHATS_DATA,
+  GET_PROFILE_DATA,
+  GET_AUDIO_DATA,
+  GET_IMAGE_DATA,
+} = userType;
 
-// export const appReducer = (state = initialState, actions: { type: string; payload: any }) => {
-//   switch (actions.type) {
-//     case SHOW_LOADING:
-//       return { ...state, chek: true };
-//     case HIDE_LOADING:
-//       return { ...state, chek: false };
-//     case SHOW_ALERT:
-//       return { ...state, alert: actions.payload };
-//     case HIDE_ALERT:
-//       return { ...state, alert: null };
-//     default:
-//       return state;
-//   }
+export const userReducer = (state = initialState, actions: { type: string; payload: any }) => {
+  switch (actions.type) {
+    case GET_PROFILE_DATA:
+      return {
+        ...state,
+        profile: actions.payload.profile,
+      };
+    case GET_CLOSE_CHATS_DATA:
+      return { ...state, closeChats: actions.payload };
+    case GET_OPEN_CHATS_DATA:
+      return { ...state, openChats: actions.payload };
+    case GET_AUDIO_DATA:
+      return { ...state, audio: actions.payload };
+    case GET_IMAGE_DATA:
+      return { ...state, images: actions.payload };
+    default:
+      return state;
+  }
+};

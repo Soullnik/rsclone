@@ -40,7 +40,7 @@ const SignUpForm = () => {
     }
     if (alertError) {
       message.error(alertError)
-    }
+    } 
   }
 
   return (

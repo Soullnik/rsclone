@@ -1,11 +1,11 @@
-import React, { Suspense, lazy, Fragment, useEffect, useContext} from 'react';
-import { Switch, Route } from 'react-router-dom';
+import React, { Suspense, lazy, Fragment } from 'react';
+import { Switch, Route, Redirect } from 'react-router-dom';
 import { Spin, Layout } from 'antd';
 import { Header, Footer, Side } from '../../layout';
+import './style.scss'
 
 const Home: React.FC = () => {
   const { Content } = Layout;
-  
 
   const Messenger = lazy(() => import('../messenger'));
   const News = lazy(() => import('../news'));
@@ -14,15 +14,15 @@ const Home: React.FC = () => {
   return (
     <Fragment>
       <Side />
-      <Layout className="site-layout">
+      <Layout>
         <Header />
-        <Content style={{ margin: '10px 16px', display: 'flex', flexDirection: 'column' }}>
-          <Suspense fallback={<Spin size='large' style={{ margin: 'auto' }} />}>
+        <Content className="main" >
+          <Suspense fallback={<Spin size="large" style={{ margin: 'auto' }} />}>
             <Switch>
+              <Route path="/profile" component={Profile} />
               <Route path="/messenger" component={Messenger} />
               <Route path="/news" component={News} />
-              <Route path="/profile" component={Profile} />
-              <Route path="/" component={Profile} />
+              <Redirect to="/profile" />
             </Switch>
           </Suspense>
         </Content>
@@ -32,8 +32,4 @@ const Home: React.FC = () => {
   );
 };
 
-export default Home
-
-  
-
-
+export default Home;

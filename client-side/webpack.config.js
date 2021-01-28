@@ -84,8 +84,3 @@ module.exports = {
     },
   },
 };
-
-
-
-// filename: '[name].bundle.js',
-//     chunkFilename: '[name].chunk.js',

@@ -1,10 +1,14 @@
 import { takeEvery, put, call } from 'redux-saga/effects';
+import { push } from 'connected-react-router';
 import { confirmedSignIn, confirmedSignUp, confirmedSignOut, authDataAdd } from '../../../api/auth';
-import { authActions } from '../../actions';
+import { fetchUserData } from '../../../api/user';
+import { authActions, userActions } from '../../actions';
 import { authType } from '../../actionsTypes';
 import { delay } from '../../../utils/helpers';
 
 const { SIGNIN_USER, SIGNUP_USER, SIGNOUT_USER } = authType;
+
+const { getProfileData } = userActions;
 
 const {
   showAlertSuccess,
@@ -22,7 +26,9 @@ function* warkerSignUp({ payload }: any) {
     yield put(showAlertSuccess('Пользователь создан'));
     yield delay(3000);
     yield put(hideAlertSuccess());
+    yield put(push('/'));
   } catch (error) {
+    yield console.log(error)
     yield put(showAlertError('Проверьте правильность введенных данных'));
     yield delay(3000);
     yield put(hideAlertError());
@@ -34,6 +40,8 @@ function* warkerSignIn({ payload }: any) {
     const id = yield call(confirmedSignIn, payload);
     yield localStorage.setItem('userId', id);
     yield put(signInComplete(id));
+    const data = yield call(fetchUserData, id);
+    yield put(getProfileData(data));
   } catch (error) {
     yield put(showAlertError('Проверьте правильность введенных данных'));
     yield delay(3000);
@@ -51,20 +59,9 @@ function* warkerSignOut() {
   }
 }
 
-// function* warkerFargot({ payload }: any) {
-//   try {
-//     const id = yield call(confirmedSignIn, payload);
-//     yield put(signInComplete(id));
-//   } catch (error) {
-//     yield put(showAlert('Проверьте правильность введенных данных'));
-//     yield delay(3000);
-//     yield put(hideAlert());
-//   }
-// }
 
 export function* watchAuth() {
   yield takeEvery(SIGNIN_USER, warkerSignIn);
   yield takeEvery(SIGNUP_USER, warkerSignUp);
   yield takeEvery(SIGNOUT_USER, warkerSignOut);
-  // yield takeEvery(FORGOT_USER, warkerFargot);
 }
