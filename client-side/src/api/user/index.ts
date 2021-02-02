@@ -1,11 +1,5 @@
 import { db, storage } from '../../configs/configFirebase';
 
-// export async function confirmedSignIn(action: any) {
-//   const response = await auth.signInWithEmailAndPassword(action.email, action.password);
-//   auth.onAuthStateChanged(() => {});
-//   return response.user?.uid;
-// }
-
 export async function fetchUserData(id: string) {
   const profileData = await db.collection('users').doc(id).get();
   return profileData.data();
@@ -19,12 +13,84 @@ export async function fetchStorageData(id: string, path: string) {
       maxResults: 10,
       pageToken: firstPage.nextPageToken,
     });
-    promiseUrl = await secondPage.items.map((promise) => promise.getDownloadURL());
+    promiseUrl = await secondPage.items.map(async (promise) => {
+      return {
+        name: promise.name,
+        url: await promise.getDownloadURL()
+      }
+    });
   } else {
-    promiseUrl = await firstPage.items.map((promise) => promise.getDownloadURL());
+    promiseUrl = await firstPage.items.map(async (promise) => {
+      return {
+        name: promise.name,
+        url: await promise.getDownloadURL()
+      }
+    });
   }
 
-  const result = await Promise.all(promiseUrl)
+  const result = await Promise.all(promiseUrl);
 
+  const fileList = result.map((item: any, index: number) => {
+    return {
+      showRemoveIcon: false,
+      uid: `${index}`,
+      name: `${item.name}`,
+      status: 'done',
+      url: `${item.url}`,
+    };
+  });
+
+  return fileList;
+}
+
+export async function fetchFriendsData(id: string) {
+  const profileData = await db.collection('users').doc(id).get();
+  const friendsList = profileData.data()?.friends;
+  const friendsPromises = friendsList.map(async (item: any) => {
+    const friend = await db.collection('users').doc(item).get();
+    const friendData = await friend.data();
+    return friendData;
+  });
+
+  const result = await Promise.all(friendsPromises);
   return result;
+}
+
+export async function uploadStorageData(file: any, id: string, path: string) {
+  const ref = await storage.child(`${path}/${id}/${file.name}`).put(file);
+}
+
+export async function deleteStorageData(name: string, id: string, path: string) {
+  const ref = await storage.child(`${path}/${id}/${name}`).delete();
+}
+
+export async function postAvatarUrl(src: any, id: any) {
+  db.collection('users')
+    .doc(id)
+    .update({
+      "profile.avatar" : src
+    });
+}
+
+export async function postProfilerData(value: any,type: any, id: any) {
+  db.collection('users')
+    .doc(id)
+    .update({
+      [`profile.${type}`] : value
+    });
+}
+
+export async function searchPeople(value: any) {
+  let userList:any = []
+  const users = await db.collection('users').where('profile.firstName', '==', value).get();
+  users.forEach(function (doc) {
+    const data = doc.data()
+    userList.push({
+      id: doc.id,
+      firstName: data.profile.firstName,
+      lastName: data.profile.lastName,
+      avatar: data.profile.avatar
+    })
+  });
+  return userList
 }

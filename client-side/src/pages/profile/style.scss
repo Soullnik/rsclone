@@ -1,5 +1,11 @@
 .profile {
   height: 100%;
+  .card__music {
+    .ant-card-body {
+      overflow: scroll;
+      height: 280px;
+    }
+  }
   .friend-card {
     max-width: 33%;
     max-height: 50%;
@@ -31,12 +37,6 @@
       overflow: scroll;
     }
 
-    .ant-image-img {
-      object-fit: cover;
-      height: 250px;
-      width: 250px;
-      display: block;
-      margin: auto;
-    }
+    
   }
 }

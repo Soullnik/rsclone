@@ -10,14 +10,11 @@ const {
   SIGNUP_USER,
   SIGNOUT_USER,
   FORGOT_USER,
-  SIGNIN_COMPLETE,
-  SIGNOUT_COMPLETE,
 } = authType;
 
-export const showAlertSuccess = (text: string) => {
+export const showAlertSuccess = () => {
   return {
     type: SHOW_ALERT_SUCCESS,
-    payload: text,
   };
 };
 
@@ -27,10 +24,9 @@ export const hideAlertSuccess = () => {
   };
 };
 
-export const showAlertError = (text: string) => {
+export const showAlertError = () => {
   return {
     type: SHOW_ALERT_ERROR,
-    payload: text,
   };
 };
 
@@ -59,19 +55,6 @@ export function signUp(values: Types.TypeValue) {
     payload: values,
   };
 }
-
-export const signInComplete = (id: string) => {
-  return {
-    type: SIGNIN_COMPLETE,
-    payload: id,
-  };
-};
-
-export const signOutComplete = () => {
-  return {
-    type: SIGNOUT_COMPLETE,
-  };
-};
 
 export function forgot(values: Types.TypeValue) {
   return {

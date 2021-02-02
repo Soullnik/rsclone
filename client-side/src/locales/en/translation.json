@@ -1,5 +1,50 @@
 {
-  "len": "EN",
+  "lang": "EN",
+  "auth": {
+    "or": "Or",
+    "links": {
+      "forgot": "Forgot password",
+      "signup": "register now!",
+      "signin": "Log In"
+    },
+    "alert": {
+      "signInError": "incorrect password or email, please try again",
+      "succcess": "grate, user create",
+      "error": "this email is taking"
+    },
+    "signup": {
+      "title": "Sign up",
+      "email": {
+        "label": "email",
+        "message": "The input is not valid E-mail!",
+        "required": "Please input your email!"
+      },
+      "password": {
+        "label": "password",
+        "message": "Please input your password!"
+      },
+      "confirmed": {
+        "label": "confirmed password",
+        "message": "Please confirm your password!",
+        "error": "The two passwords that you entered do not match!"
+      },
+      "submit": "Create user"
+    },
+    "signin": {
+      "remember": "Remember me",
+      "title": "Sign in",
+      "email": {
+        "placeholder": "email",
+        "message": "Please input your email!"
+      },
+      "password": {
+        "placeholder": "password",
+        "message": "Please input your password!"
+      },
+      "submit": "Log in"
+    },
+    "forgot": {}
+  },
   "description": {
     "part1": "Home",
     "part2": "Profile",

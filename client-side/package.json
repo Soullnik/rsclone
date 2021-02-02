@@ -52,6 +52,7 @@
   },
   "dependencies": {
     "antd": "^4.10.0",
+    "antd-img-crop": "^3.13.2",
     "axios": "^0.21.1",
     "connected-react-router": "^6.8.0",
     "core-js": "^3.8.2",

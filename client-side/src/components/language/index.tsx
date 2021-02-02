@@ -27,7 +27,7 @@ const Language = (props: any) => {
     <Dropdown className={className} overlay={menu} trigger={['hover']} placement="bottomCenter">
       <div style={{ lineHeight: '0', color: `${color}`, cursor: 'pointer', minWidth: '50px' }}>
         <GlobalOutlined style={{ marginRight: '3px' }} />
-        <span style={{ userSelect: 'none' }}>{t('len')}</span>
+        <span style={{ userSelect: 'none' }}>{t('lang')}</span>
       </div>
     </Dropdown>
   );

@@ -1,27 +1,22 @@
 import { authType } from '../../actionsTypes';
 
 const initialState = {
-  alertSuccess: null,
-  alertError: null,
-  userId: localStorage.getItem('userId') || null,
+  alertSuccess: false,
+  alertError: false,
 };
 
-const { SHOW_ALERT_SUCCESS, HIDE_ALERT__SUCCESS,SHOW_ALERT_ERROR,HIDE_ALERT_ERROR, SIGNOUT_COMPLETE, SIGNIN_COMPLETE } = authType;
+const { SHOW_ALERT_SUCCESS, HIDE_ALERT__SUCCESS,SHOW_ALERT_ERROR,HIDE_ALERT_ERROR} = authType;
 
 export const authReducer = (state = initialState, actions: { type: string; payload: any }) => {
   switch (actions.type) {
     case SHOW_ALERT_SUCCESS:
-      return { ...state, alertSuccess: actions.payload };
+      return { ...state, alertSuccess: true };
     case HIDE_ALERT__SUCCESS:
-      return { ...state, alertSuccess: null };
+      return { ...state, alertSuccess: false };
     case SHOW_ALERT_ERROR:
-      return { ...state, alertError: actions.payload };
+      return { ...state, alertError: true };
     case HIDE_ALERT_ERROR:
-      return { ...state, alertError: null };
-    case SIGNIN_COMPLETE:
-      return { ...state, userId: actions.payload };
-    case SIGNOUT_COMPLETE:
-      return { ...state, userId: null };
+      return { ...state, alertError: false };
     default:
       return state;
   }

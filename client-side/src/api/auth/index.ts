@@ -10,13 +10,13 @@ type TypeSignUp = {
 };
 
 export async function confirmedSignIn(action: any) {
-  try {
-    const response = await auth.signInWithEmailAndPassword(action.email, action.password);
-    auth.onAuthStateChanged(() => {});
-    return response.user?.uid;
-  } catch(error) {
-    return new Error(error);
-  }
+  const response = await auth.signInWithEmailAndPassword(action.email, action.password);
+  auth.onAuthStateChanged((user) => {
+    if (user) {
+      localStorage.setItem('userId', `${user.uid}`);
+    }
+  });
+  return response.user?.uid;
 }
 
 export async function confirmedSignUp(action: TypeSignUp) {
@@ -33,9 +33,23 @@ export async function confirmedSignOut() {
 }
 
 export async function authDataAdd(id: string, action: TypeSignUp) {
-  db.collection("users").doc(id).set({
-    firstName: action.firstName,
-    lastName: action.lastName,
-    gender: action.gender
-  })
+  db.collection('users')
+    .doc(id)
+    .set({
+      
+      profile: {
+        firstName: action.firstName,
+        lastName: action.lastName,
+        age: null,
+        gender: action.gender,
+        city: null,
+        about: null,
+        avatar: null,
+      },
+      friends: [],
+      posts: [],
+      openChats: null,
+      closeChats: null,
+      images: [],
+    });
 }

@@ -1,51 +1,48 @@
-import React, { Fragment } from 'react';
+import React, { Fragment, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Form, Input, Tooltip, Select, Button, message } from 'antd';
 import { QuestionCircleOutlined } from '@ant-design/icons';
 import { Types } from '../../schemas';
 import { Link } from 'react-router-dom';
 import { authActions } from '../../redux/actions';
-
+import { useTranslation } from 'react-i18next';
 import './styles.scss';
 
 const { signUp } = authActions;
 
+const { Option } = Select;
+
+const formItemLayout = {
+  labelCol: {
+    xs: {
+      span: 24,
+    },
+    sm: {
+      span: 8,
+    },
+  },
+};
+
 const SignUpForm = () => {
+  const [form] = Form.useForm();
   const dispatch = useDispatch();
   const [alertSuccess, alertError] = useSelector((state: any) => [
     state.auth.alertSuccess,
     state.auth.alertError,
   ]);
-  const [form] = Form.useForm();
-  const { Option } = Select;
+  const { t } = useTranslation();
 
   const onFinish = (values: Types.TypeValue) => {
     dispatch(signUp(values));
   };
 
-  const formItemLayout = {
-    labelCol: {
-      xs: {
-        span: 24,
-      },
-      sm: {
-        span: 8,
-      },
-    },
-  };
-
-  const alert = (alertSuccess: any, alertError: any): void => {
-    if (alertSuccess) {
-      message.success(alertSuccess)
-    }
-    if (alertError) {
-      message.error(alertError)
-    } 
-  }
+  useEffect(() => {
+    if (alertError) message.error(t('auth.alert.error'));
+    if (alertSuccess) message.success(t('auth.alert.succcess'));
+  }, [alertError, alertSuccess]);
 
   return (
     <Fragment>
-      {alert(alertSuccess, alertError)}
       <Form
         {...formItemLayout}
         form={form}
@@ -54,18 +51,18 @@ const SignUpForm = () => {
         onFinish={onFinish}
         scrollToFirstError
       >
-        <h3 className="signup-form__title">SIGN UP</h3>
+        <h3 className="signup-form__title">{t('auth.signup.title')}</h3>
         <Form.Item
           name="email"
-          label="E-mail"
+          label={t('auth.signup.email.label')}
           rules={[
             {
               type: 'email',
-              message: 'The input is not valid E-mail!',
+              message: t('auth.signup.email.message'),
             },
             {
               required: true,
-              message: 'Please input your E-mail!',
+              message: t('auth.signup.email.required'),
             },
           ]}
         >
@@ -73,12 +70,14 @@ const SignUpForm = () => {
         </Form.Item>
         <Form.Item
           name="password"
-          label="Password"
+          label={t('auth.signup.password.label')}
           rules={[
             {
+              min: 6,
+              max: 12,
               required: true,
-              message: 'Please input your password!',
-            },
+              message: t('auth.signup.password.message'),
+            },          
           ]}
           hasFeedback
         >
@@ -86,21 +85,21 @@ const SignUpForm = () => {
         </Form.Item>
         <Form.Item
           name="confirm"
-          label="Confirm Password"
+          label={t('auth.signup.confirmed.label')}
           dependencies={['password']}
           hasFeedback
           rules={[
             {
               required: true,
-              message: 'Please confirm your password!',
+              message: t('auth.signup.confirmed.message'),
             },
             ({ getFieldValue }) => ({
               validator(_, value) {
                 if (!value || getFieldValue('password') === value) {
                   return Promise.resolve();
-                }
+                }           
 
-                return Promise.reject('The two passwords that you entered do not match!');
+                return Promise.reject(t('auth.signup.confirmed.error'));
               },
             }),
           ]}
@@ -155,9 +154,9 @@ const SignUpForm = () => {
         </Form.Item>
         <Form.Item>
           <Button type="primary" htmlType="submit" className="signup-form__button">
-            Sign Up
+          {t('auth.signup.submit')}
           </Button>
-          Or <Link to="/">Log In</Link>
+          {t('auth.or')} <Link to="/">{t('auth.links.signin')}</Link>
         </Form.Item>
       </Form>
     </Fragment>

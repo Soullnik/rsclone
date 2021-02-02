@@ -1,8 +1,9 @@
-import React, { Fragment } from 'react';
+import React, { Fragment, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Form, Input, Button, Checkbox, message } from 'antd';
 import { LockOutlined, UserOutlined } from '@ant-design/icons';
 import { Link } from 'react-router-dom';
+import { useTranslation } from 'react-i18next';
 
 import { authActions } from '../../redux/actions';
 
@@ -12,7 +13,8 @@ import './styles.scss';
 
 const LoginForm = () => {
   const dispatch = useDispatch();
-  const alert = useSelector((state: any) => state.auth.alert);
+  const alertError = useSelector((state: any) => state.auth.alertError);
+  const { t } = useTranslation();
 
   const [form] = Form.useForm();
 
@@ -20,10 +22,14 @@ const LoginForm = () => {
     dispatch(signIn(values));
   };
 
+  useEffect(() => {
+    if (alertError) {
+      message.error(t('auth.alert.signInError'));
+    }
+  }, [alertError]);
+
   return (
     <Fragment>
-      {alert && message.error(alert)}
-
       <Form
         form={form}
         name="normal_login"
@@ -33,46 +39,49 @@ const LoginForm = () => {
         }}
         onFinish={onFinish}
       >
-        <h3 className="login-form-title">SIGN IN</h3>
+        <h3 className="login-form-title">{t('auth.signin.title')}</h3>
         <Form.Item
           name="email"
           rules={[
             {
               required: true,
-              message: 'Please input your email!',
+              message: t('auth.signin.email.message'),
             },
           ]}
         >
-          <Input prefix={<UserOutlined className="site-form-item-icon" />} placeholder="email" />
+          <Input
+            prefix={<UserOutlined className="site-form-item-icon" />}
+            placeholder={t('auth.signin.email.placeholder')}
+          />
         </Form.Item>
         <Form.Item
           name="password"
           rules={[
             {
               required: true,
-              message: 'Please input your Password!',
+              message: t('auth.signin.password.message'),
             },
           ]}
         >
           <Input
             prefix={<LockOutlined className="site-form-item-icon" />}
             type="password"
-            placeholder="Password"
+            placeholder={t('auth.signin.password.placeholder')}
           />
         </Form.Item>
         <Form.Item>
           <Form.Item name="remember" valuePropName="checked" noStyle>
-            <Checkbox>Remember me</Checkbox>
+            <Checkbox>{t('auth.signin.remember')}</Checkbox>
           </Form.Item>
           <Link to="/forgot" className="login-form-forgot">
-            Forgot password
+            {t('auth.links.forgot')}
           </Link>
         </Form.Item>
         <Form.Item>
           <Button type="primary" htmlType="submit" className="login-form-button">
-            Log in
+            {t('auth.signin.submit')}
           </Button>
-          Or <Link to="/signup">register now!</Link>
+          {t('auth.or')} <Link to="/signup">{t('auth.links.signup')}</Link>
         </Form.Item>
       </Form>
     </Fragment>

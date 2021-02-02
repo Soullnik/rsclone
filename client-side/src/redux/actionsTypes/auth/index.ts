@@ -6,5 +6,4 @@ export const SIGNOUT_USER = 'AUTH/SIGNOUT';
 export const SIGNIN_USER = 'AUTH/SIGNIN';
 export const SIGNUP_USER = 'AUTH/SIGNUP';
 export const FORGOT_USER = 'AUTH/FORGOT';
-export const SIGNIN_COMPLETE = 'AUTH/SIGNIN_COMPLETE';
-export const SIGNOUT_COMPLETE = 'AUTH/SIGNOUT_COMPLETE';
+
