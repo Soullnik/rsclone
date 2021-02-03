@@ -11,7 +11,7 @@ const { signIn } = authActions;
 
 const PostsForm = () => {
   const dispatch = useDispatch();
-  const alertError = useSelector((state: any) => state.auth.alertError);
+  const editable = useSelector((state: any) => state.user.editable);
   const { t } = useTranslation();
 
   const [form] = Form.useForm();
@@ -29,11 +29,11 @@ const PostsForm = () => {
         <Form.Item  name="post">
           <Input.TextArea allowClear={true} autoSize={{ minRows: 2, maxRows: 6 }} bordered />
         </Form.Item>
-        <Form.Item>
+        {editable && <Form.Item>
           <Button type="primary" htmlType="submit" className="post-form-button">
             Запостить
           </Button>
-        </Form.Item>
+        </Form.Item>}
       </Form>
     </Fragment>
   );

@@ -156,7 +156,7 @@ const SignUpForm = () => {
           <Button type="primary" htmlType="submit" className="signup-form__button">
           {t('auth.signup.submit')}
           </Button>
-          {t('auth.or')} <Link to="/">{t('auth.links.signin')}</Link>
+          {t('auth.or')} <Link to="/auth/login">{t('auth.links.signin')}</Link>
         </Form.Item>
       </Form>
     </Fragment>

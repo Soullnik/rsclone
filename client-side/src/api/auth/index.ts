@@ -38,8 +38,8 @@ export async function authDataAdd(id: string, action: TypeSignUp) {
     .set({
       
       profile: {
-        firstName: action.firstName,
-        lastName: action.lastName,
+        firstName: action.firstName.toLowerCase(),
+        lastName: action.lastName.toLowerCase(),
         age: null,
         gender: action.gender,
         city: null,

@@ -9,6 +9,7 @@ module.exports = {
   target: 'web',
   mode: 'development',
   output: {
+    publicPath: '/',
     path: path.resolve(__dirname, 'dist'),
     filename: '[name].[hash:8].js',
     sourceMapFilename: '[name].[hash:8].map',
@@ -75,12 +76,34 @@ module.exports = {
     }),
     new MiniCssExtractPlugin(),
     new CopyPlugin({
-      patterns: [{ from: 'src/locales', to: 'locales' }],
+      patterns: [
+        { from: 'src/locales', to: 'locales' },
+        { from: 'src/assets/images', to: 'images' },
+        { from: 'src/assets/icons', to: 'icons' },
+      ],
     }),
   ],
   optimization: {
     splitChunks: {
-      chunks: 'all',
+      chunks: 'async',
+      minSize: 30000,
+      minRemainingSize: 0,
+      maxSize: 500000,
+      minChunks: 1,
+      maxAsyncRequests: 6,
+      maxInitialRequests: 4,
+      automaticNameDelimiter: '~',
+      cacheGroups: {
+        vendors: {
+          test: /[\\/]node_modules[\\/]/,
+          priority: -10,
+        },
+        default: {
+          minChunks: 2,
+          priority: -20,
+          reuseExistingChunk: true,
+        },
+      },
     },
   },
 };

@@ -73,7 +73,7 @@ const LoginForm = () => {
           <Form.Item name="remember" valuePropName="checked" noStyle>
             <Checkbox>{t('auth.signin.remember')}</Checkbox>
           </Form.Item>
-          <Link to="/forgot" className="login-form-forgot">
+          <Link to="/auth/forgot" className="login-form-forgot">
             {t('auth.links.forgot')}
           </Link>
         </Form.Item>
@@ -81,7 +81,7 @@ const LoginForm = () => {
           <Button type="primary" htmlType="submit" className="login-form-button">
             {t('auth.signin.submit')}
           </Button>
-          {t('auth.or')} <Link to="/signup">{t('auth.links.signup')}</Link>
+          {t('auth.or')} <Link to="/auth/signup">{t('auth.links.signup')}</Link>
         </Form.Item>
       </Form>
     </Fragment>

@@ -1,7 +1,6 @@
 import { appType } from '../../actionsTypes';
-import { Types } from '../..//../schemas';
 
-const { SIGNOUT_COMPLETE, SIGNIN_COMPLETE, SEARCH_USER, LOAD_LIST } = appType;
+const { SIGNOUT_COMPLETE, SIGNIN_COMPLETE, SEARCH_USER, LOAD_LIST, CHANGE_USER} = appType;
 
 export const signOutComplete = () => {
   return {
@@ -29,3 +28,12 @@ export const viewUserList = (value: any) => {
     payload: value,
   };
 };
+
+
+export const changeUser = (id:string) => {
+  return {
+    type: CHANGE_USER,
+    payload: id,
+  };
+}
+

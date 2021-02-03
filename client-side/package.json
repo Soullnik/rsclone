@@ -17,7 +17,7 @@
   "bugs": {
     "url": "https://github.com/Soullnik/rsclone/issues"
   },
-  "homepage": "https://github.com/Soullnik/rsclone#readme",
+  "homepage": ".",
   "devDependencies": {
     "@babel/cli": "^7.12.10",
     "@babel/core": "^7.12.10",

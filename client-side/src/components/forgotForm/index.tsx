@@ -31,11 +31,11 @@ const Forgot = () => {
       >
         <Input prefix={<UserOutlined className="site-form-item-icon" />} placeholder="email" />
       </Form.Item>
-      <Link to="/login">login now!</Link>
+      <Link to="/auth/login">login now!</Link>
       <Button type="primary" htmlType="submit" className="forgot-form__button">
         Send email
       </Button>
-      Or <Link to="/signup">register now!</Link>
+      Or <Link to="/auth/signup">register now!</Link>
     </Form>
   );
 };

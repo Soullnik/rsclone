@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import firebase from 'firebase/app';
 import {
   PageHeader,
@@ -11,6 +11,8 @@ import {
   Form,
   Avatar,
   DatePicker,
+  Button,
+  Space,
 } from 'antd';
 import { useDispatch, useSelector } from 'react-redux';
 import { userActions } from '../../redux/actions';
@@ -22,46 +24,44 @@ import Posts from '../../components/postsList';
 
 import './style.scss';
 import moment from 'moment';
+import { Link } from 'react-router-dom';
 
-const { openOtherProfile, changeUserProfile } = userActions;
+const { changeUserProfile, sendMessage, addFriend } = userActions;
 const { Paragraph } = Typography;
 const { Meta } = Card;
 
 const Profile: React.FC = () => {
   const dispath = useDispatch();
+  const currentFriends = useSelector((state: any) => state.user.currentFriends);
+  const friends = useSelector((state: any) => state.user.friends);
   const editable = useSelector((state: any) => state.user.editable);
   const loading = useSelector((state: any) => state.user.loading);
-  const id = useSelector((state: any) => state.app.userId);
+  const userId = useSelector((state: any) => state.app.userId);
+  const currnetId = useSelector((state: any) => state.app.currnetUser);
   const profileData = useSelector((state: { user: any }) => state.user.profile);
 
-  const changeData = (value: any, type: any) => {
-    dispath(changeUserProfile({ value, type, id }));
-  };
+  const [friendButton, setFriendButton] = useState(true)
 
-  const friendArr = ['Антон'];
+  const changeData = (value: any, type: any) => {
+    dispath(changeUserProfile({ value, type, userId }));
+  };
 
   if (!loading) {
     return (
       <Row style={{ marginRight: '0', marginLeft: '0' }} className="profile" wrap gutter={[16, 16]}>
         <Col className="profile__aside" xs={24} sm={24} md={8} lg={8} xl={6} xxl={6}>
-          <Card title="Друзья" loading={false}>
-            {friendArr.map((item, index) => {
+          <Card
+            headStyle={{ backgroundColor: '#001529', color: 'white' }}
+            title="Друзья"
+            loading={false}
+          >
+            {currentFriends.map((item: any) => {
               return (
-                <div
-                  key={index}
-                  onClick={() => {
-                    // dispath(openOtherProfile());
-                  }}
-                >
+                <Link to={`/content/profile/${item.id}`} key={item.id}>
                   <Card.Grid className="friend-card">
-                    <Meta
-                      avatar={
-                        <Avatar src="https://zos.alipayobjects.com/rmsportal/ODTLcjxAfvqbxHnVXCYX.png" />
-                      }
-                      title={item}
-                    />
+                    <Meta avatar={<Avatar src={item.avatar} />} title={item.firstName} />
                   </Card.Grid>
-                </div>
+                </Link>
               );
             })}
           </Card>
@@ -80,7 +80,30 @@ const Profile: React.FC = () => {
               xl={10}
               xxl={10}
             >
-              <ProfileAvatar url={profileData.avatar} />
+              <Space direction="vertical">
+                <ProfileAvatar url={profileData.avatar} />
+                {editable || (
+                  <React.Fragment>
+                    {!(friends.findIndex((item: any) => item.id == currnetId) + 1) && friendButton && (
+                      <Button
+                        onClick={() => {
+                          setFriendButton(false)
+                          dispath(addFriend({ currnetId, userId }));
+                        }}
+                      >
+                        add to friends
+                      </Button>
+                    )}
+                    <Button
+                      onClick={() => {
+                        dispath(sendMessage({ currnetId, userId }));
+                      }}
+                    >
+                      send message
+                    </Button>
+                  </React.Fragment>
+                )}
+              </Space>
             </Col>
             <Col xs={24} sm={14} md={14} lg={14} xl={14} xxl={14}>
               <Divider orientation="right" plain>
@@ -90,11 +113,13 @@ const Profile: React.FC = () => {
                 <Form.Item label="дата рождения">
                   <DatePicker
                     disabled={!editable}
-                    value={moment(profileData.age.toDate(), 'DD/MM/YYYY')}
+                    value={profileData.age ? moment(profileData.age.toDate(), 'DD/MM/YYYY') : null}
                     bordered={false}
                     onChange={(date: any, dateString: string) => {
                       changeData(
-                        firebase.firestore.Timestamp.fromDate(new Date(date.format())),
+                        date
+                          ? firebase.firestore.Timestamp.fromDate(new Date(date.format()))
+                          : null,
                         'age'
                       );
                     }}
@@ -102,36 +127,42 @@ const Profile: React.FC = () => {
                 </Form.Item>
                 <Form.Item label="Пол">
                   <Paragraph
-                    editable={{
-                      onChange: (value) => {
-                        const val = value;
-                        changeData(val, 'gender');
-                      },
-                    }}
+                    editable={
+                      editable && {
+                        onChange: (value) => {
+                          const val = value;
+                          changeData(val, 'gender');
+                        },
+                      }
+                    }
                   >
                     {profileData.gender || ''}
                   </Paragraph>
                 </Form.Item>
                 <Form.Item label="Текуший город">
                   <Paragraph
-                    editable={{
-                      onChange: (value) => {
-                        const val = value;
-                        changeData(val, 'city');
-                      },
-                    }}
+                    editable={
+                      editable && {
+                        onChange: (value) => {
+                          const val = value;
+                          changeData(val, 'city');
+                        },
+                      }
+                    }
                   >
                     {profileData.city || ''}
                   </Paragraph>
                 </Form.Item>
                 <Form.Item label="обо мне">
                   <Paragraph
-                    editable={{
-                      onChange: (value) => {
-                        const val = value;
-                        changeData(val, 'about');
-                      },
-                    }}
+                    editable={
+                      editable && {
+                        onChange: (value) => {
+                          const val = value;
+                          changeData(val, 'about');
+                        },
+                      }
+                    }
                   >
                     {profileData.about || ''}
                   </Paragraph>
@@ -141,7 +172,7 @@ const Profile: React.FC = () => {
           </Row>
           <div>
             <Divider orientation="right" plain>
-              My posts
+              Posts
             </Divider>
             <Posts />
             {editable ? <PostsForm /> : ''}

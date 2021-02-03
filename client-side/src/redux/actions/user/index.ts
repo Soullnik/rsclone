@@ -13,7 +13,11 @@ const {
   EDITABLE_USER_DATA,
   DELETE_USER_DATA,
   CHOISE_USER_AVATAR,
-  CHANGE_USER_PROFILE
+  CHANGE_USER_PROFILE,
+  ADD_TO_FRIENDS,
+  UPDATE_FRIENDS,
+  OPEN_CHAT_WITH_USER,
+  LOAD_FRIENDS
 } = userType;
 
 export function getProfileData(data: Types.TypeUser) {
@@ -23,18 +27,19 @@ export function getProfileData(data: Types.TypeUser) {
   };
 }
 
-export function editableTurnOn() {
+export function editableTurnOn(value: boolean) {
   return {
     type: EDITABLE_USER_DATA,
+    payload: value,
   };
 }
 
-export function loadUserData() {
+export function loadUserData(value: boolean) {
   return {
     type: LOAD_USER_DATA,
+    payload: value,
   };
 }
-
 
 export function getAudioData(data: Array<string>) {
   return {
@@ -50,20 +55,19 @@ export function getImageData(data: Array<string>) {
   };
 }
 
-export function uploadUserData(payload:any) {
+export function uploadUserData(payload: any) {
   return {
     type: UPLOAD_USER_DATA,
     payload: payload,
   };
 }
 
-export function deleteUserData(payload:any) {
+export function deleteUserData(payload: any) {
   return {
     type: DELETE_USER_DATA,
     payload: payload,
   };
 }
-
 
 export const signInComplete = () => {
   return {
@@ -91,14 +95,12 @@ export const openOtherProfile = (id: any) => {
   };
 };
 
-
 export const postUserAvatar = (payload: any) => {
   return {
     type: CHOISE_USER_AVATAR,
     payload: payload,
   };
 };
-
 
 export const changeUserProfile = (payload: any) => {
   return {
@@ -107,3 +109,32 @@ export const changeUserProfile = (payload: any) => {
   };
 };
 
+export function sendMessage(payload: any) {
+  return {
+    type: OPEN_CHAT_WITH_USER,
+    payload: payload,
+  };
+}
+
+
+
+export function addFriend(payload: any) {
+  return {
+    type: ADD_TO_FRIENDS,
+    payload: payload,
+  };
+}
+
+export function updateFriendList(payload: any) {
+  return {
+    type: UPDATE_FRIENDS,
+    payload: payload,
+  };
+}
+
+export const loadFriendsInit = (data: any) => {
+  return {
+    type: LOAD_FRIENDS,
+    payload: data,
+  };
+}

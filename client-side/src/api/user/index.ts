@@ -1,4 +1,4 @@
-import { db, storage } from '../../configs/configFirebase';
+import { db, storage, array } from '../../configs/configFirebase';
 
 export async function fetchUserData(id: string) {
   const profileData = await db.collection('users').doc(id).get();
@@ -16,15 +16,15 @@ export async function fetchStorageData(id: string, path: string) {
     promiseUrl = await secondPage.items.map(async (promise) => {
       return {
         name: promise.name,
-        url: await promise.getDownloadURL()
-      }
+        url: await promise.getDownloadURL(),
+      };
     });
   } else {
     promiseUrl = await firstPage.items.map(async (promise) => {
       return {
         name: promise.name,
-        url: await promise.getDownloadURL()
-      }
+        url: await promise.getDownloadURL(),
+      };
     });
   }
 
@@ -49,10 +49,15 @@ export async function fetchFriendsData(id: string) {
   const friendsPromises = friendsList.map(async (item: any) => {
     const friend = await db.collection('users').doc(item).get();
     const friendData = await friend.data();
-    return friendData;
+    return {
+      id: item,
+      avatar: friendData?.profile.avatar,
+      firstName: friendData?.profile.firstName,
+    };
   });
 
   const result = await Promise.all(friendsPromises);
+
   return result;
 }
 
@@ -65,32 +70,52 @@ export async function deleteStorageData(name: string, id: string, path: string) 
 }
 
 export async function postAvatarUrl(src: any, id: any) {
+  db.collection('users').doc(id).update({
+    'profile.avatar': src,
+  });
+}
+
+export async function postProfilerData(value: any, type: any, id: any) {
   db.collection('users')
     .doc(id)
     .update({
-      "profile.avatar" : src
+      [`profile.${type}`]: value,
     });
 }
 
-export async function postProfilerData(value: any,type: any, id: any) {
+export async function postFriendData(value: any, id: any) {
   db.collection('users')
     .doc(id)
     .update({
-      [`profile.${type}`] : value
+      friends: array.arrayUnion(value),
     });
 }
 
 export async function searchPeople(value: any) {
-  let userList:any = []
-  const users = await db.collection('users').where('profile.firstName', '==', value).get();
-  users.forEach(function (doc) {
-    const data = doc.data()
-    userList.push({
-      id: doc.id,
-      firstName: data.profile.firstName,
-      lastName: data.profile.lastName,
-      avatar: data.profile.avatar
-    })
-  });
-  return userList
+  let userList: any = [];
+  if (value === 'all') {
+    const users = await db.collection('users').get();
+    users.forEach(function (doc) {
+      const data = doc.data();
+      userList.push({
+        id: doc.id,
+        firstName: data.profile.firstName,
+        lastName: data.profile.lastName,
+        avatar: data.profile.avatar,
+      });
+    });
+  } else {
+    const users = await db.collection('users').where('profile.firstName', '==', value).get();
+    users.forEach(function (doc) {
+      const data = doc.data();
+      userList.push({
+        id: doc.id,
+        firstName: data.profile.firstName,
+        lastName: data.profile.lastName,
+        avatar: data.profile.avatar,
+      });
+    });
+  }
+
+  return userList;
 }

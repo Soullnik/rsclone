@@ -1,10 +1,11 @@
 import { userType, appType } from '../../actionsTypes';
+import { CHANGE_USER } from '../../actionsTypes/app';
 
 const initialState = {
   editable: false,
   loading: true,
   ImageLoading: false,
-  choseUser: null,
+  currentFriends: null,
   friends: [],
   posts: [],
   profile: {
@@ -32,7 +33,8 @@ const {
   GET_IMAGE_DATA,
   LOAD_USER_DATA,
   EDITABLE_USER_DATA,
-  GET_FRIENDS_DATA
+  UPDATE_FRIENDS,
+  LOAD_FRIENDS,
 } = userType;
 
 export const userReducer = (state = initialState, actions: { type: string; payload: any }) => {
@@ -40,8 +42,10 @@ export const userReducer = (state = initialState, actions: { type: string; paylo
     case LOAD_USER_DATA:
       return {
         ...state,
-        loading: false,
+        loading: actions.payload,
       };
+    case LOAD_FRIENDS:
+      return { ...state, friends: actions.payload };
     case GET_PROFILE_DATA:
       return {
         ...state,
@@ -50,20 +54,22 @@ export const userReducer = (state = initialState, actions: { type: string; paylo
     case EDITABLE_USER_DATA:
       return {
         ...state,
-        editable: true,
+        editable: actions.payload,
       };
     case GET_CLOSE_CHATS_DATA:
       return { ...state, closeChats: actions.payload };
     case GET_OPEN_CHATS_DATA:
       return { ...state, openChats: actions.payload };
-    case GET_FRIENDS_DATA:
-      return { ...state, friends: actions.payload };
+    case UPDATE_FRIENDS:
+      return { ...state, currentFriends: actions.payload };
     case GET_OPEN_CHATS_DATA:
       return { ...state, openChats: actions.payload };
     case GET_AUDIO_DATA:
       return { ...state, audio: actions.payload };
     case GET_IMAGE_DATA:
       return { ...state, images: actions.payload };
+    case CHANGE_USER:
+      return { ...state, loading: true };
     case SIGNOUT_COMPLETE:
       return { ...initialState };
     default:

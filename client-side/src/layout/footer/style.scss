@@ -1,0 +1,34 @@
+.rsschool-link {
+  width: 110px;
+  .rsschool-image {
+    width: 90px;
+    transition: width 0.5s ease-in-out ;
+    &:hover {
+      width: 110px;
+    } 
+  }
+}
+
+.avatar-url {
+  width: 50px;
+  height: 50px;
+  line-height: 50px;
+  font-size: 18px;
+  &:hover {
+    animation: flip-scale-down-diag-2 linear 1s infinite running;
+  }
+}
+
+
+
+@keyframes flip-scale-down-diag-2 {
+  0% {
+    transform: scale(1) rotate3d(-1, 1, 0, 0deg);
+  }
+  50% {
+    transform: scale(0.4) rotate3d(-1, 1, 0, -90deg);
+  }
+  100% {
+    transform: scale(1) rotate3d(-1, 1, 0, -180deg);
+  }
+}

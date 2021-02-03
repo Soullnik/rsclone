@@ -1,12 +1,12 @@
 import React, { Suspense, lazy, useEffect } from 'react';
 import { history } from '../redux/store';
 import { ConnectedRouter } from 'connected-react-router';
-import { Switch, Route } from 'react-router-dom';
+import { Switch, Route, Redirect } from 'react-router-dom';
 import { Spin, Layout} from 'antd';
 import { useSelector } from 'react-redux';
 
-const Content = lazy(() => import('../pages/content'));
-const Auth = lazy(() => import('../pages/auth'));
+const Content = lazy(() => import('./content'));
+const Auth = lazy(() => import('./auth'));
 
 const MainRouter = () => {
   const userId = useSelector((state:any) => state.app.userId);
@@ -16,7 +16,9 @@ const MainRouter = () => {
       <Layout style={{ minHeight: '100vh' }}>
         <Suspense fallback={<Spin size="large" style={{ margin: 'auto' }} />}>
           <Switch>
-            <Route path="/" component={userId ? Content : Auth} />
+            <Route path="/auth" component={Auth} />
+            <Route path="/content" component={userId && Content} />
+            <Redirect to='/auth' />
           </Switch>
         </Suspense>
       </Layout>

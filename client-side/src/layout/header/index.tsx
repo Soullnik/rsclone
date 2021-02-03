@@ -1,14 +1,17 @@
 import React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useTranslation } from 'react-i18next';
-import { Layout, Button, Space, Input, Dropdown, List, Avatar, Row, Col, Grid, Menu } from 'antd';
+import { Layout, Button, Input, Dropdown, Avatar, Row, Col, Grid, Menu, Space, Image } from 'antd';
+import { LockOutlined, UserOutlined } from '@ant-design/icons';
 import { authActions, appActions } from '../../redux/actions';
 import Language from '../../components/language';
 
 import './style.scss';
+import { Link } from 'react-router-dom';
+import { loadUserData } from '../../redux/actions/user';
 
 const { signOut } = authActions;
-const { searchUser } = appActions;
+const { searchUser, changeUser } = appActions;
 const { useBreakpoint } = Grid;
 
 const Header = () => {
@@ -35,38 +38,29 @@ const Header = () => {
             trigger={['click']}
             overlay={
               <Menu>
-                <Menu.Item>
-                  <a target="_blank" rel="noopener noreferrer" href="http://www.alipay.com/">
-                    1st menu item
-                  </a>
-                </Menu.Item>
-                <Menu.Item>
-                  <a target="_blank" rel="noopener noreferrer" href="http://www.taobao.com/">
-                    2nd menu item
-                  </a>
-                </Menu.Item>
-                <Menu.Item>
-                  <a target="_blank" rel="noopener noreferrer" href="http://www.tmall.com/">
-                    3rd menu item
-                  </a>
-                </Menu.Item>
-                <Menu.Item danger>a danger item</Menu.Item>
+                {!listData ? (
+                  <div>Not Found</div>
+                ) : (
+                  listData.map((item: any) => {
+                    return (
+                      <Menu.Item key={item.id}>
+                        <Link to={`/content/profile/${item.id}`}>
+                          <Space>
+                            <Avatar src={<Image src={item.avatar} />} />
+                            <span>{item.firstName}</span>
+                            <span>{item.lastName}</span>
+                          </Space>
+                        </Link>
+                      </Menu.Item>
+                    );
+                  })
+                )}
               </Menu>
-              // <List
-              //   itemLayout="vertical"
-              //   size="large"
-              //   dataSource={listData}
-              //   renderItem={(item: any) => (
-              //     <List.Item key={item.id}>
-              //       <div>{item.firstName}</div>
-              //     </List.Item>
-              //   )}
-              // />
             }
           >
             <Search
               style={{ margin: '16px 0', lineHeight: '0', maxWidth: '1000px' }}
-              placeholder="input first name or seconde name user"
+              placeholder="enter 'all' if you want to find all or enter name"
               loading={false}
               onSearch={onSearch}
               enterButton

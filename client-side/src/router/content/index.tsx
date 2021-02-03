@@ -7,17 +7,18 @@ import { useDispatch, useSelector } from 'react-redux';
 import { requestUserData } from '../../redux/actions/user';
 
 const Content: React.FC = () => {
-  const dispatch = useDispatch()
+  const dispatch = useDispatch();
   const id = useSelector((state: any) => state.app.userId);
+  const currentid = useSelector((state: any) => state.app.currnetUser);
   const { Content } = Layout;
 
   useEffect(() => {
-    dispatch(requestUserData(id));
-  }, [id]);
+    dispatch(requestUserData({currentid, id}));
+  }, [currentid]);
 
-  const Messenger = lazy(() => import('../messenger'));
-  const News = lazy(() => import('../news'));
-  const Profile = lazy(() => import('../profile'));
+  const Messenger = lazy(() => import('../../pages/messenger'));
+  const News = lazy(() => import('../../pages/news'));
+  const Profile = lazy(() => import('../../pages/profile'));
 
   return (
     <Fragment>
@@ -27,11 +28,10 @@ const Content: React.FC = () => {
         <Content className="main">
           <Suspense fallback={<Spin size="large" style={{ margin: 'auto' }} />}>
             <Switch>
-              <Route path="/profile" component={Profile} />
-              <Route path="/profile" render={() => <Profile />} />
-              <Route path="/messenger" component={Messenger} />
-              <Route path="/news" component={News} />
-              <Redirect to={`/profile`} />
+              <Route path={`/content/profile/:id`} render={() => <Profile />} />
+              <Route path="/content/messenger" component={Messenger} />
+              <Route path="/content/news" component={News} />
+              <Redirect to={`/content/profile/:id}`} />
             </Switch>
           </Suspense>
         </Content>

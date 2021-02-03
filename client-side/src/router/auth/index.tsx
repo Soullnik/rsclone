@@ -15,10 +15,10 @@ const Auth: React.FC<Props> = () => {
     <div className="auth-form-container">
       <Language className='auth-form-language'/>
       <Switch>
-        <Route path="/login" component={LoginForm} />
-        <Route path="/signup" component={SignupForm} />
-        <Route path="/forgot" component={ForgotForm} />
-        <Redirect to="/login" />
+        <Route path="/auth/login" component={LoginForm} />
+        <Route path="/auth/signup" component={SignupForm} />
+        <Route path="/auth/forgot" component={ForgotForm} />
+        <Redirect to="/auth/login" />
       </Switch>
     </div>
   );

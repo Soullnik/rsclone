@@ -57,11 +57,11 @@ const PicturesWall = () => {
         beforeUpload={beforeUpload}
         onPreview={handlePreview}
         onChange={handleChange}
-        onRemove={handleRemove}
+        onRemove={editable && handleRemove}
       >
         {editable ? uploadButton : null}
       </Upload>
-      <Modal title={<Button onClick={() => {handleGetAvatar(previewImage)}}>Сделать аватаром</Button>} footer={''}  visible={previewVisible} closeIcon={<FullscreenExitOutlined />} onCancel={handleCancel}>
+      <Modal title={editable && <Button onClick={() => { handleGetAvatar(previewImage)}}>Сделать аватаром</Button>} footer={''}  visible={previewVisible} closeIcon={<FullscreenExitOutlined />} onCancel={handleCancel}>
         <img alt="example" style={{ width: '100%' }} src={previewImage} />
       </Modal>
     </div>
