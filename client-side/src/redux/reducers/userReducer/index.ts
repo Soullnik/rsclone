@@ -35,6 +35,7 @@ const {
   EDITABLE_USER_DATA,
   UPDATE_FRIENDS,
   LOAD_FRIENDS,
+  LOAD_POST,
 } = userType;
 
 export const userReducer = (state = initialState, actions: { type: string; payload: any }) => {
@@ -46,6 +47,8 @@ export const userReducer = (state = initialState, actions: { type: string; paylo
       };
     case LOAD_FRIENDS:
       return { ...state, friends: actions.payload };
+    case LOAD_POST:
+      return { ...state, posts: actions.payload };
     case GET_PROFILE_DATA:
       return {
         ...state,

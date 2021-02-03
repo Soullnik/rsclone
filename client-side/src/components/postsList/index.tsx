@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { Comment, Tooltip, List } from 'antd';
 
 import moment from 'moment';
@@ -7,15 +7,14 @@ import { capitalize } from '../../utils/helpers';
 
 const Posts = () => {
   const profileData = useSelector((state: { user: any }) => state.user.profile);
-  const data = [
-    {
+  const posts = useSelector((state: { user: any }) => state.user.posts);
+  const data = posts.map((item: any) => {
+    return {
       author: `${capitalize(profileData.firstName)} ${capitalize(profileData.lastName)}`,
-      avatar: profileData.avatar,
+      avatar: item.avatar,
       content: (
         <p>
-          We supply a series of design principles, practical patterns and high quality design
-          resources (Sketch and Axure), to help people create their product prototypes beautifully
-          and efficiently.
+          {item.text}
         </p>
       ),
       datetime: (
@@ -23,16 +22,20 @@ const Posts = () => {
           <span>{moment().subtract(1, 'days').fromNow()}</span>
         </Tooltip>
       ),
-    },
-  ];
+    }
+  })
+
+  useEffect(()=> {
+
+  }, [posts])
 
   return (
     <List
-      style={{ maxHeight: '300px' }}
+      style={{ maxHeight: '170px' }}
       className="comment-list"
       itemLayout="horizontal"
       dataSource={data}
-      renderItem={(item) => (
+      renderItem={(item: any) => (
         <li>
           <Comment
             author={item.author}

@@ -25,3 +25,5 @@ export const ADD_TO_FRIENDS = 'USER/ADD_TO_FRIENDS';
 export const OPEN_CHAT_WITH_USER = 'USER/OPEN_CHAT_WITH_USER';
 
 export const UPDATE_FRIENDS = 'USER/UPDATE_FRIENDS';
+export const ADD_POST = 'USER/ADD_POST'
+export const  LOAD_POST = 'USER/LOAD_POST'

@@ -61,6 +61,24 @@ export async function fetchFriendsData(id: string) {
   return result;
 }
 
+export async function fetchPostsData(id: string) {
+  const profileData = await db.collection('users').doc(id).get();
+  const postList = profileData.data()?.posts;
+  const postsPromises = postList.map(async (item: any) => {
+    const post = await db.collection('users').doc(item).get();
+    const postsData = await post.data();
+    return {
+      text: item,
+      avatar: postsData?.profile.avatar,
+      firstName: postsData?.profile.firstName,
+    };
+  });
+
+  const result = await Promise.all(postsPromises);
+
+  return result;
+}
+
 export async function uploadStorageData(file: any, id: string, path: string) {
   const ref = await storage.child(`${path}/${id}/${file.name}`).put(file);
 }
@@ -88,6 +106,14 @@ export async function postFriendData(value: any, id: any) {
     .doc(id)
     .update({
       friends: array.arrayUnion(value),
+    });
+}
+
+export async function postPostsData(value: any, id: any) {
+  db.collection('users')
+    .doc(id)
+    .update({
+      posts: array.arrayUnion(value)
     });
 }
 

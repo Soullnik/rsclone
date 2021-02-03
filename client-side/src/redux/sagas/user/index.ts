@@ -9,7 +9,8 @@ import {
   postAvatarUrl,
   postProfilerData,
   postFriendData,
-  
+  postPostsData,
+  fetchPostsData
 } from '../../../api/user';
 import { userActions } from '../../actions';
 import { viewUserList } from '../../actions/app';
@@ -23,16 +24,18 @@ const {
   CHANGE_USER_PROFILE,
   OPEN_CHAT_WITH_USER,
   ADD_TO_FRIENDS,
+  ADD_POST,
 } = userType;
 const { SEARCH_USER } = appType;
 
-const { getProfileData, getAudioData, getImageData, loadUserData, editableTurnOn, updateFriendList,loadFriendsInit } = userActions;
+const { getProfileData, getAudioData, getImageData, loadUserData, editableTurnOn, updateFriendList,loadFriendsInit, loadPosts } = userActions;
 
 function* warkerUserData({ payload }: any) {
   try {
     yield put(loadUserData(true));
     const profile = yield call(fetchUserData, payload.currentid);
     const friends = yield call(fetchFriendsData, payload.id);
+    const posts = yield call(fetchPostsData, payload.currentid);
     const currentfriends = yield call(fetchFriendsData, payload.currentid);
     const images = yield call(fetchStorageData, payload.currentid, 'images');
     const audio = yield call(fetchStorageData, payload.currentid, 'musics');
@@ -42,6 +45,7 @@ function* warkerUserData({ payload }: any) {
     yield put(getProfileData(profile));
     yield put(loadFriendsInit(friends))
     yield put(updateFriendList(currentfriends))
+    yield put(loadPosts(posts))
     yield put(getAudioData(audio));
     yield put(getImageData(images));
     yield put(loadUserData(false));
@@ -115,6 +119,17 @@ function* warkerOpenChat({ payload }: any) {
   }
 }
 
+function* warkerPost({ payload }: any) {
+  try {
+    yield console.log(payload)
+    yield call(postPostsData, payload.values, payload.userId);
+    const posts = yield call(fetchPostsData, payload.userId);
+    yield put(loadPosts(posts))
+  } catch (error) {
+    yield console.log(error);
+  }
+}
+
 export function* watchUser() {
   yield takeEvery(REQUEST_USER_DATA, warkerUserData);
   yield takeEvery(UPLOAD_USER_DATA, warkerUserDataUpload);
@@ -124,4 +139,5 @@ export function* watchUser() {
   yield takeEvery(CHANGE_USER_PROFILE, warkerUserProfileChanged);
   yield takeEvery(ADD_TO_FRIENDS, warkerAddFriends);
   yield takeEvery(OPEN_CHAT_WITH_USER, warkerOpenChat);
+  yield takeEvery(ADD_POST, warkerPost);
 }

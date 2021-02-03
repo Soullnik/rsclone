@@ -17,7 +17,9 @@ const {
   ADD_TO_FRIENDS,
   UPDATE_FRIENDS,
   OPEN_CHAT_WITH_USER,
-  LOAD_FRIENDS
+  LOAD_FRIENDS,
+  ADD_POST,
+  LOAD_POST,
 } = userType;
 
 export function getProfileData(data: Types.TypeUser) {
@@ -116,8 +118,6 @@ export function sendMessage(payload: any) {
   };
 }
 
-
-
 export function addFriend(payload: any) {
   return {
     type: ADD_TO_FRIENDS,
@@ -137,4 +137,18 @@ export const loadFriendsInit = (data: any) => {
     type: LOAD_FRIENDS,
     payload: data,
   };
-}
+};
+
+export const sendPost = (payload: any) => {
+  return {
+    type: ADD_POST,
+    payload: payload,
+  };
+};
+
+export const loadPosts = (payload: any) => {
+  return {
+    type: LOAD_POST,
+    payload: payload,
+  };
+};
