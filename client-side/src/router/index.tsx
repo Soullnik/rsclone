@@ -1,23 +1,35 @@
-import React, { Suspense, lazy, useContext } from 'react';
-import { BrowserRouter as Router } from 'react-router-dom';
-import dataContext from '../context';
-// import { ConnectedRouter } from 'connected-react-router';
+import React, { Suspense, lazy } from 'react';
+import { history } from '../redux/store';
+import { ConnectedRouter } from 'connected-react-router';
+import { Switch, Route, Redirect } from 'react-router-dom';
 import { Spin, Layout } from 'antd';
+import { useSelector } from 'react-redux';
 
-const Home = lazy(() => import('../pages/home'));
-const Auth = lazy(() => import('../pages/Auth'));
+const Content = lazy(() => import('./content'));
+const Auth = lazy(() => import('./auth'));
 
 const MainRouter = () => {
-  const { state } = useContext(dataContext);
+  const userId = useSelector((state: any) => state.app.userId);
 
   return (
-    <Router>
+    <ConnectedRouter history={history}>
       <Layout style={{ minHeight: '100vh' }}>
         <Suspense fallback={<Spin size="large" style={{ margin: 'auto' }} />}>
-          {state?.user ? <Home /> : <Auth />}
+          {userId ? (
+            <Switch>
+              <Route path={"/content"} component={Content} />
+              <Redirect to={`/content/profile/${userId}`} />
+            </Switch>
+          ) : (
+            <Switch>
+              <Route path="/auth" component={Auth} />
+              <Redirect to="/auth" />
+            </Switch>
+          )}
         </Suspense>
       </Layout>
-    </Router>
+    </ConnectedRouter>
   );
 };
+
 export default MainRouter;

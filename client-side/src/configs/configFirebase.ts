@@ -1,17 +1,20 @@
 import firebase from 'firebase/app';
 import 'firebase/firestore';
-import "firebase/auth";
-
+import 'firebase/auth';
+import 'firebase/storage';
 
 firebase.initializeApp({
-  apiKey: "AIzaSyDRsrc3qV5pz82wi-BjtS-1SUPBBNObqL8",
-  authDomain: "rsclone-b3871.firebaseapp.com",
-  databaseURL: "https://rsclone-b3871-default-rtdb.firebaseio.com",
-  projectId: "rsclone-b3871",
-  storageBucket: "rsclone-b3871.appspot.com",
-  messagingSenderId: "1088692180844",
-  appId: "1:1088692180844:web:09950b916b147ef8780549"
+  apiKey: 'AIzaSyAIY6z8x1Iu13l-eoAl5i7v-t_RvQk_Xr8',
+  authDomain: 'rsclone-c5c06.firebaseapp.com',
+  databaseURL: 'https://rsclone-c5c06-default-rtdb.europe-west1.firebasedatabase.app',
+  projectId: 'rsclone-c5c06',
+  storageBucket: 'rsclone-c5c06.appspot.com',
+  messagingSenderId: '709769313283',
+  appId: '1:709769313283:web:b454ad2867e8e52627a236',
 });
 
 export const db = firebase.firestore();
 export const auth = firebase.auth();
+export const storage = firebase.storage().ref();
+export const time = firebase.firestore.Timestamp
+export const array = firebase.firestore.FieldValue
