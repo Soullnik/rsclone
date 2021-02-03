@@ -1,0 +1,43 @@
+.profile {
+  height: 100%;
+  .card__music {
+    .ant-card-body {
+      overflow: scroll;
+      height: 280px;
+    }
+  }
+  .friend-card {
+    max-width: 30%;
+    max-height: 50%;
+    text-align: center;
+    padding: 5px;
+    margin: 2px;
+    cursor: pointer;
+    .ant-card-meta {
+      width: 100%;
+      height: 100%;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      &-avatar {
+        padding-right: 0;
+      }
+    }
+  }
+
+  .profile__info {
+    flex-basis: 1;
+    div.ant-typography,
+    .ant-typography p {
+      margin-bottom: 0;
+    }
+    .ant-form-item {
+      margin-bottom: 10px;
+    }
+    .comment-list {
+      overflow: scroll;
+    }
+
+    
+  }
+}

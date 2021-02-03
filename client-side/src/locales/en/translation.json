@@ -1,0 +1,104 @@
+{
+  "lang": "EN",
+  "auth": {
+    "or": "Or",
+    "links": {
+      "forgot": "Forgot password",
+      "signup": "register now!",
+      "signin": "login now!"
+    },
+    "alert": {
+      "signInError": "incorrect password or email, please try again",
+      "succcess": "grate, user create",
+      "error": "this email is taking"
+    },
+    "signup": {
+      "title": "Sign up",
+      "email": {
+        "label": "email",
+        "message": "The input is not valid E-mail!",
+        "required": "Please input your email!"
+      },
+      "password": {
+        "label": "password",
+        "message": "Please input your password!"
+      },
+      "confirmed": {
+        "label": "confirmed password",
+        "message": "Please confirm your password!",
+        "error": "The two passwords that you entered do not match!"
+      },
+      "firstName": {
+        "label": "First name",
+        "message": "What do you want others to call you?",
+        "error": "Please input your Last name!"
+      },
+      "lastName": {
+        "label": "Last name",
+        "message": "What do you want others to call you?",
+        "error": "Please input your First name!"
+      },
+      "gender": {
+        "male": "Male",
+        "select": "Select gender",
+        "female": "Female",
+        "message": "Please add your gender!"
+      },
+      "submit": "Create user"
+    },
+    "forgot": {
+      "title": "Forgot",
+      "email": {
+        "label": "email",
+        "message": "The input is not valid E-mail!",
+        "required": "Please input your email!"
+      },
+      "submit": "Send email"
+    },
+    "signin": {
+      "remember": "Remember me",
+      "title": "Sign in",
+      "email": {
+        "placeholder": "email",
+        "message": "Please input your email!"
+      },
+      "password": {
+        "placeholder": "password",
+        "message": "Please input your password!"
+      },
+      "submit": "Log in"
+    }
+  },
+  "content": {
+    "friends": "Friends",
+    "send": "Send message",
+    "addFriend": "Add to friends",
+    "info": "Information",
+    "postFrom": {
+      "title": "Posts",
+      "button": "Send post"
+    },
+    "picture": {
+      "upload": "Upload",
+      "choice": "Choice"
+    },
+    "avatar": "To choose an avatar, upload an image to the gallery and click 'Choice' ",
+    "profile": {
+      "about": "About",
+      "city": "City",
+      "gender": "Gender",
+      "age": "Birthday"
+    }
+  },
+  "side": {
+    "profile": "Profile",
+    "mess": "Messengers",
+    "news": "News"
+  },
+  "header" : {
+    "notFound": "Not found",
+    "search": "Enter 'all' if you want to find all or enter name",
+    "button": "Log out"
+  }
+}
+
