@@ -36,7 +36,7 @@ const PostsForm = () => {
         {editable && (
           <Form.Item>
             <Button type="primary" htmlType="submit" className="post-form-button">
-              Запостить
+              {t('content.postFrom.button')}
             </Button>
           </Form.Item>
         )}

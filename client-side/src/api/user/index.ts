@@ -113,7 +113,7 @@ export async function postPostsData(value: any, id: any) {
   db.collection('users')
     .doc(id)
     .update({
-      posts: array.arrayUnion(value)
+      posts: array.arrayUnion(value),
     });
 }
 
@@ -144,4 +144,34 @@ export async function searchPeople(value: any) {
   }
 
   return userList;
+}
+
+export async function searchChat(currnetId: any, userId: any) {
+  try {
+    const profileData = await db
+      .collection('chats')
+      .where('users', 'in', [[currnetId, userId]])
+      .get();
+
+    console.log(profileData)
+  } catch (error) {}
+
+  // const postList = profileData.data()?.posts;
+  // const postsPromises = postList.map(async (item: any) => {
+  //   const post = await db.collection('users').doc(item).get();
+  //   const postsData = await post.data();
+  //   return {
+  //     text: item,
+  //     avatar: postsData?.profile.avatar,
+  //     firstName: postsData?.profile.firstName,
+  //   };
+  // });
+
+  // const result = await Promise.all(postsPromises);
+
+  // return result;
+  // db.collection("cities").doc("SF")
+  //   .onSnapshot((doc) => {
+  //       console.log("Current data: ", doc.data());
+  //   });
 }

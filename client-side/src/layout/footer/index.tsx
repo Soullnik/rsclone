@@ -33,14 +33,6 @@ const Footer = () => {
           >
             <img src="/images/nikolayGit.jpg" />
           </a>
-          <a
-            href="https://github.com/Zolotou"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="ant-avatar ant-avatar-circle ant-avatar-image avatar-url"
-          >
-            <img src="/images/vadimGit.jpg" />
-          </a>
         </Avatar.Group>
         <a target="_blank" className="rsschool-link" href="https://rs.school/js/">
           <img className="rsschool-image" src="/icons/rs_school_js.svg" alt="" />

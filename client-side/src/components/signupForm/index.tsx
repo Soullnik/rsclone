@@ -110,8 +110,8 @@ const SignUpForm = () => {
           name="firstName"
           label={
             <span>
-              First Name&nbsp;
-              <Tooltip title="What do you want others to call you?">
+              {t('auth.signup.firstName.label')}&nbsp;
+              <Tooltip title={t('auth.signup.firstName.message')}>
                 <QuestionCircleOutlined />
               </Tooltip>
             </span>
@@ -119,7 +119,7 @@ const SignUpForm = () => {
           rules={[
             {
               required: true,
-              message: 'Please input your firstName!',
+              message: t('auth.signup.firstName.error'),
               whitespace: true,
             },
           ]}
@@ -130,8 +130,8 @@ const SignUpForm = () => {
           name="lastName"
           label={
             <span>
-              Last Name&nbsp;
-              <Tooltip title="What do you want others to call you?">
+              {t('auth.signup.lastName.label')}&nbsp;
+              <Tooltip title={t('auth.signup.lastName.message')}>
                 <QuestionCircleOutlined />
               </Tooltip>
             </span>
@@ -139,17 +139,17 @@ const SignUpForm = () => {
           rules={[
             {
               required: true,
-              message: 'Please input your lastName!',
+              message: t('auth.signup.lastName.error'),
               whitespace: true,
             },
           ]}
         >
           <Input />
         </Form.Item>
-        <Form.Item name="gender" rules={[{ required: true, message: 'Please add your gender!' }]}>
-          <Select placeholder="Select gender">
-            <Option value="male">Male</Option>
-            <Option value="female">Female</Option>
+        <Form.Item name="gender" rules={[{ required: true, message: t('auth.signup.gender.message') }]}>
+          <Select placeholder={t('auth.signup.gender.select')}>
+            <Option value="male">{t('auth.signup.gender.male')}</Option>
+            <Option value="female">{t('auth.signup.gender.female')}</Option>
           </Select>
         </Form.Item>
         <Form.Item>

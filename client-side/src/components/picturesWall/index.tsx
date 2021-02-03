@@ -3,11 +3,13 @@ import { Upload, Modal, Button } from 'antd';
 import { PlusOutlined, FullscreenExitOutlined } from '@ant-design/icons/lib';
 import { beforeUpload, dummyRequest } from '../../utils/helpers';
 import { useDispatch, useSelector } from 'react-redux';
+import { useTranslation } from 'react-i18next';
 import { uploadUserData, deleteUserData, postUserAvatar } from '../../redux/actions/user';
 
 
 const PicturesWall = () => {
   const dispatch = useDispatch()
+  const { t } = useTranslation();
   const [loading, setLoading] = useState(false)
   const [previewVisible, setPreviewVisible] = useState(false)
   const [previewImage, setpreviewImage] = useState('')
@@ -26,7 +28,7 @@ const PicturesWall = () => {
   const uploadButton = (
     <div>
       <PlusOutlined />
-      <div className="ant-upload-text">Upload</div>
+      <div className="ant-upload-text">{t('content.picture.upload')}</div>
     </div>
   );
 
@@ -61,7 +63,7 @@ const PicturesWall = () => {
       >
         {editable ? uploadButton : null}
       </Upload>
-      <Modal title={editable && <Button onClick={() => { handleGetAvatar(previewImage)}}>Сделать аватаром</Button>} footer={''}  visible={previewVisible} closeIcon={<FullscreenExitOutlined />} onCancel={handleCancel}>
+      <Modal title={editable && <Button onClick={() => { handleGetAvatar(previewImage)}}>{t('content.picture.choice')}</Button>} footer={''}  visible={previewVisible} closeIcon={<FullscreenExitOutlined />} onCancel={handleCancel}>
         <img alt="example" style={{ width: '100%' }} src={previewImage} />
       </Modal>
     </div>

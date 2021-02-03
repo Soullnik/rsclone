@@ -39,7 +39,7 @@ const Header = () => {
             overlay={
               <Menu>
                 {!listData ? (
-                  <div>Not Found</div>
+                  <div>{t('header.notFound')}</div>
                 ) : (
                   listData.map((item: any) => {
                     return (
@@ -60,7 +60,7 @@ const Header = () => {
           >
             <Search
               style={{ margin: '16px 0', lineHeight: '0', maxWidth: '1000px' }}
-              placeholder="enter 'all' if you want to find all or enter name"
+              placeholder={t('header.search')}
               loading={false}
               onSearch={onSearch}
               enterButton
@@ -68,7 +68,7 @@ const Header = () => {
           </Dropdown>
         </Col>
         <Col>
-          <Button onClick={logOutHeandler}>LOG OUT</Button>
+          <Button onClick={logOutHeandler}>{t('header.button')}</Button>
         </Col>
         <Col>
           <Language color="white" />

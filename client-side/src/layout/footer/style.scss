@@ -26,9 +26,9 @@
     transform: scale(1) rotate3d(-1, 1, 0, 0deg);
   }
   50% {
-    transform: scale(0.4) rotate3d(-1, 1, 0, -90deg);
+    transform: scale(0.4) rotate3d(-1, 1, 0, -180deg);
   }
   100% {
-    transform: scale(1) rotate3d(-1, 1, 0, -180deg);
+    transform: scale(1) rotate3d(-1, 1, 0, -360deg);
   }
 }

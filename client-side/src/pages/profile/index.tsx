@@ -21,6 +21,7 @@ import PostsForm from '../../components/postForm';
 import PicturesWall from '../../components/picturesWall';
 import ProfileAvatar from '../../components/avatar';
 import Posts from '../../components/postsList';
+import { useTranslation } from 'react-i18next';
 
 import './style.scss';
 import moment from 'moment';
@@ -31,6 +32,7 @@ const { Paragraph } = Typography;
 const { Meta } = Card;
 
 const Profile: React.FC = () => {
+  const { t } = useTranslation();
   const dispath = useDispatch();
   const currentFriends = useSelector((state: any) => state.user.currentFriends);
   const friends = useSelector((state: any) => state.user.friends);
@@ -52,7 +54,7 @@ const Profile: React.FC = () => {
         <Col className="profile__aside" xs={24} sm={24} md={8} lg={8} xl={6} xxl={6}>
           <Card
             headStyle={{ backgroundColor: '#001529', color: 'white' }}
-            title="Друзья"
+            title={t('content.friends')}
             loading={false}
           >
             {currentFriends.map((item: any) => {
@@ -91,7 +93,7 @@ const Profile: React.FC = () => {
                           dispath(addFriend({ currnetId, userId }));
                         }}
                       >
-                        add to friends
+                        {t('content.addFriend')}
                       </Button>
                     )}
                     <Button
@@ -99,7 +101,7 @@ const Profile: React.FC = () => {
                         dispath(sendMessage({ currnetId, userId }));
                       }}
                     >
-                      send message
+                      {t('content.send')}
                     </Button>
                   </React.Fragment>
                 )}
@@ -107,10 +109,10 @@ const Profile: React.FC = () => {
             </Col>
             <Col xs={24} sm={14} md={14} lg={14} xl={14} xxl={14}>
               <Divider orientation="right" plain>
-                information
+              {t('content.info')}
               </Divider>
               <Form>
-                <Form.Item label="дата рождения">
+                <Form.Item label={t('content.profile.age')}>
                   <DatePicker
                     disabled={!editable}
                     value={profileData.age ? moment(profileData.age.toDate(), 'DD/MM/YYYY') : null}
@@ -125,7 +127,7 @@ const Profile: React.FC = () => {
                     }}
                   />
                 </Form.Item>
-                <Form.Item label="Пол">
+                <Form.Item label={t('content.profile.gender')}>
                   <Paragraph
                     editable={
                       editable && {
@@ -139,7 +141,7 @@ const Profile: React.FC = () => {
                     {profileData.gender || ''}
                   </Paragraph>
                 </Form.Item>
-                <Form.Item label="Текуший город">
+                <Form.Item label={t('content.profile.city')}>
                   <Paragraph
                     editable={
                       editable && {
@@ -153,7 +155,7 @@ const Profile: React.FC = () => {
                     {profileData.city || ''}
                   </Paragraph>
                 </Form.Item>
-                <Form.Item label="обо мне">
+                <Form.Item label={t('content.profile.about')}>
                   <Paragraph
                     editable={
                       editable && {
@@ -172,7 +174,7 @@ const Profile: React.FC = () => {
           </Row>
           <div>
             <Divider orientation="right" plain>
-              Posts
+              {t('content.postFrom.title')}
             </Divider>
             <Posts />
             {editable ? <PostsForm /> : ''}

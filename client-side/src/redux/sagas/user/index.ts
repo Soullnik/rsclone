@@ -1,3 +1,4 @@
+import { push } from 'connected-react-router';
 import { takeEvery, put, call } from 'redux-saga/effects';
 import {
   fetchUserData,
@@ -10,7 +11,8 @@ import {
   postProfilerData,
   postFriendData,
   postPostsData,
-  fetchPostsData
+  fetchPostsData,
+  searchChat
 } from '../../../api/user';
 import { userActions } from '../../actions';
 import { viewUserList } from '../../actions/app';
@@ -113,7 +115,8 @@ function* warkerAddFriends({ payload }: any) {
 
 function* warkerOpenChat({ payload }: any) {
   try {
-    yield call(postProfilerData, payload.value, payload.type, payload.userId);
+    yield call(searchChat, payload.currnetId, payload.userId);
+    // yield put(push('content/messenger/'));
   } catch (error) {
     yield console.log(error);
   }
@@ -121,7 +124,6 @@ function* warkerOpenChat({ payload }: any) {
 
 function* warkerPost({ payload }: any) {
   try {
-    yield console.log(payload)
     yield call(postPostsData, payload.values, payload.userId);
     const posts = yield call(fetchPostsData, payload.userId);
     yield put(loadPosts(posts))

@@ -28,13 +28,13 @@ const Side = () => {
       >
         <SubMenu key="sub1" title={<LogoIcon/>}>
           <Menu.Item key="1">
-            <Link to={`/content/profile/${id}`}> {t('description.part2')}</Link>
+            <Link to={`/content/profile/${id}`}> {t('side.profile')}</Link>
           </Menu.Item>
           <Menu.Item key="2">
-            <Link to={'/content/messenger'}>{t('description.part3')}</Link>
+            <Link to={'/content/messenger'}>{t('side.mess')}</Link>
           </Menu.Item>
           <Menu.Item key="3">
-            <Link to={'/content/news'}> {t('description.part4')}</Link>
+            <Link to={'/content/news'}> {t('side.news')}</Link>
           </Menu.Item>
         </SubMenu>
       </Menu>
@@ -50,13 +50,13 @@ const Side = () => {
       <LogoIcon />
       <Menu theme="dark" mode="inline" defaultSelectedKeys={['1']}>
         <Menu.Item icon={<UserOutlined />} key="1">
-          <Link to={`/content/profile/${id}`}> {t('description.part2')}</Link>
+          <Link to={`/content/profile/${id}`}> {t('side.profile')}</Link>
         </Menu.Item>
         <Menu.Item icon={<MessageOutlined />} key="2">
-          <Link to={'/content/messenger'}>{t('description.part3')}</Link>
+          <Link to={'/content/messenger'}>{t('side.mess')}</Link>
         </Menu.Item>
         <Menu.Item icon={<ContainerOutlined />} key="3">
-          <Link to={'/content/news'}> {t('description.part4')}</Link>
+          <Link to={'/content/news'}> {t('side.news')}</Link>
         </Menu.Item>
       </Menu>
     </Sider>
