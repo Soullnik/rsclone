@@ -1,11 +1,11 @@
-import React, { Fragment, useEffect, useState } from 'react';
+import React, { Fragment } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Form, Input, Button } from 'antd';
-import { LockOutlined, UserOutlined } from '@ant-design/icons';
-import { Link } from 'react-router-dom';
+import firebase from 'firebase/app';
 import { useTranslation } from 'react-i18next';
 
 import { userActions } from '../../redux/actions';
+import moment from 'moment';
 
 const { sendPost } = userActions;
 
@@ -19,7 +19,15 @@ const PostsForm = () => {
 
   const onFinish = ({ values, userId }: any) => {
     form.resetFields();
-    dispatch(sendPost({ values: values.post, userId }));
+    dispatch(
+      sendPost({
+        values: {
+          text: values.post,
+          time: firebase.firestore.Timestamp.fromDate(moment().toDate()),
+        },
+        userId,
+      })
+    );
   };
 
   return (

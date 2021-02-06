@@ -10,8 +10,6 @@ i18n
   .use(Backend)
   .use(initReactI18next)
   .init({
-    debug: true,
- 
     lng: 'en',
     fallbackLng: 'en',
     whitelist: ['en', 'ru'],

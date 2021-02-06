@@ -4,26 +4,21 @@ import { PlusOutlined, FullscreenExitOutlined } from '@ant-design/icons/lib';
 import { beforeUpload, dummyRequest } from '../../utils/helpers';
 import { useDispatch, useSelector } from 'react-redux';
 import { useTranslation } from 'react-i18next';
-import { uploadUserData, deleteUserData, postUserAvatar } from '../../redux/actions/user';
-
+import {
+  uploadUserData,
+  deleteUserData,
+  postUserAvatar,
+  setImageData,
+} from '../../redux/actions/user';
 
 const PicturesWall = () => {
-  const dispatch = useDispatch()
+  const dispatch = useDispatch();
   const { t } = useTranslation();
-  const [loading, setLoading] = useState(false)
-  const [previewVisible, setPreviewVisible] = useState(false)
-  const [previewImage, setpreviewImage] = useState('')
+  const [previewVisible, setPreviewVisible] = useState(false);
+  const [previewImage, setpreviewImage] = useState('');
   const id = useSelector((state: any) => state.app.userId);
   const pictures = useSelector((state: { user: any }) => state.user.images);
   const editable = useSelector((state: any) => state.user.editable);
-
-  
-  const handleCancel = () => setPreviewVisible(false);
-
-  const handlePreview = (file: any) => {
-    setpreviewImage(file.url || file.thumbUrl)
-    setPreviewVisible(true)
-  };
 
   const uploadButton = (
     <div>
@@ -32,23 +27,31 @@ const PicturesWall = () => {
     </div>
   );
 
+  const handleCancel = () => setPreviewVisible(false);
+
+  const handlePreview = (file: any) => {
+    setpreviewImage(file.url || file.thumbUrl);
+    setPreviewVisible(true);
+  };
+
+ 
+
   const handleChange = (info: any) => {
-    if (info.file.status === 'uploading') {
-      return;
-    }
+    dispatch(setImageData(info.fileList));
     if (info.file.status === 'done') {
-      dispatch(uploadUserData({file: info.file.originFileObj, id}))
+      dispatch(uploadUserData({ file: info.file.originFileObj, id }));
     }
   };
 
   const handleRemove = (info: any) => {
-    dispatch(deleteUserData({name: info.name, id}))
+    dispatch(setImageData(info.fileList));
+    dispatch(deleteUserData({ name: info.name, id }));
   };
 
-  const handleGetAvatar = (src:any) => {
-    dispatch(postUserAvatar({src, id}))
-    setPreviewVisible(false)
-  }
+  const handleGetAvatar = (src: any) => {
+    dispatch(postUserAvatar({ value: src, id, type: 'avatar' }));
+    setPreviewVisible(false);
+  };
 
   return (
     <div className="clearfix">
@@ -63,12 +66,27 @@ const PicturesWall = () => {
       >
         {editable ? uploadButton : null}
       </Upload>
-      <Modal title={editable && <Button onClick={() => { handleGetAvatar(previewImage)}}>{t('content.picture.choice')}</Button>} footer={''}  visible={previewVisible} closeIcon={<FullscreenExitOutlined />} onCancel={handleCancel}>
+      <Modal
+        title={
+          editable && (
+            <Button
+              onClick={() => {
+                handleGetAvatar(previewImage);
+              }}
+            >
+              {t('content.picture.choice')}
+            </Button>
+          )
+        }
+        footer={''}
+        visible={previewVisible}
+        closeIcon={<FullscreenExitOutlined />}
+        onCancel={handleCancel}
+      >
         <img alt="example" style={{ width: '100%' }} src={previewImage} />
       </Modal>
     </div>
   );
-
 };
 
 export default PicturesWall;

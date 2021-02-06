@@ -5,11 +5,13 @@ import { History } from 'history';
 import { authReducer } from './authReducer';
 import { appReducer} from './appReducer'
 import { userReducer} from './userReducer'
+import { messangerReducer} from './messageReducer'
 
 export default (history: History<any>) =>
   combineReducers({
     router: connectRouter(history),
     auth: authReducer,
     user: userReducer,
-    app: appReducer
+    app: appReducer,
+    messanger: messangerReducer,
   });
