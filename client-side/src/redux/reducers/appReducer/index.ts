@@ -3,7 +3,8 @@ import { LOCATION_CHANGE } from 'connected-react-router';
 
 const initialState = {
   userId: localStorage.getItem('userId') || '',
-  currnetUser: null,
+  currentUser: localStorage.getItem('userId') || '',
+  keySide: '',
   searchList: null,
 };
 
@@ -11,8 +12,10 @@ const { SIGNOUT_COMPLETE, SIGNIN_COMPLETE, LOAD_LIST } = appType;
 
 export const appReducer = (state = initialState, actions: { type: string; payload: any }) => {
   switch (actions.type) {
+    case 'CHANGE_SIDE': 
+      return {...state, keySide: actions.payload}
     case SIGNIN_COMPLETE:
-      return { ...state, userId: actions.payload, currnetUser: actions.payload };
+      return { ...state, userId: actions.payload };
     case SIGNOUT_COMPLETE:
       return { ...state, userId: '' };
     case LOAD_LIST:
@@ -22,10 +25,10 @@ export const appReducer = (state = initialState, actions: { type: string; payloa
       if (regexp.test(actions.payload.location.pathname)) {
         return {
           ...state,
-          currnetUser: actions.payload.location.pathname.replace(/\/content\/profile\//, ''),
+          currentUser: actions.payload.location.pathname.replace(/\/content\/profile\//, ''),
         };
       }
-
+      return state
     default:
       return state;
   }

@@ -1,11 +1,11 @@
 import { db, storage, array } from '../../configs/configFirebase';
 
-export async function fetchUserData(id: string) {
-  const profileData = await db.collection('users').doc(id).get();
-  return profileData.data();
+export async function getUserData(id: string) {
+  const userData = await db.collection('users').doc(id).get();
+  return userData.data();
 }
 
-export async function fetchStorageData(id: string, path: string) {
+export async function getStorageData(id: string, path: string) {
   const firstPage = await storage.child(`${path}/${id}`).list({ maxResults: 10 });
   let promiseUrl = [];
   if (firstPage.nextPageToken) {
@@ -43,9 +43,8 @@ export async function fetchStorageData(id: string, path: string) {
   return fileList;
 }
 
-export async function fetchFriendsData(id: string) {
-  const profileData = await db.collection('users').doc(id).get();
-  const friendsList = profileData.data()?.friends;
+export async function getFriendsData(friendsList: any) {
+  if (!friendsList) return friendsList;
   const friendsPromises = friendsList.map(async (item: any) => {
     const friend = await db.collection('users').doc(item).get();
     const friendData = await friend.data();
@@ -55,28 +54,28 @@ export async function fetchFriendsData(id: string) {
       firstName: friendData?.profile.firstName,
     };
   });
-
-  const result = await Promise.all(friendsPromises);
-
-  return result;
+  return await Promise.all(friendsPromises);
 }
 
-export async function fetchPostsData(id: string) {
-  const profileData = await db.collection('users').doc(id).get();
-  const postList = profileData.data()?.posts;
-  const postsPromises = postList.map(async (item: any) => {
-    const post = await db.collection('users').doc(item).get();
-    const postsData = await post.data();
-    return {
-      text: item,
-      avatar: postsData?.profile.avatar,
-      firstName: postsData?.profile.firstName,
-    };
-  });
+export async function postFriendData(currentId: any, userId: any) {
+  db.collection('users')
+    .doc(currentId)
+    .update({
+      friends: array.arrayUnion(userId),
+    });
+  db.collection('users')
+    .doc(userId)
+    .update({
+      friends: array.arrayUnion(currentId),
+    });
+}
 
-  const result = await Promise.all(postsPromises);
-
-  return result;
+export async function postPostsData(value: any, id: any) {
+  db.collection('users')
+    .doc(id)
+    .update({
+      posts: array.arrayUnion(value),
+    });
 }
 
 export async function uploadStorageData(file: any, id: string, path: string) {
@@ -98,22 +97,6 @@ export async function postProfilerData(value: any, type: any, id: any) {
     .doc(id)
     .update({
       [`profile.${type}`]: value,
-    });
-}
-
-export async function postFriendData(value: any, id: any) {
-  db.collection('users')
-    .doc(id)
-    .update({
-      friends: array.arrayUnion(value),
-    });
-}
-
-export async function postPostsData(value: any, id: any) {
-  db.collection('users')
-    .doc(id)
-    .update({
-      posts: array.arrayUnion(value),
     });
 }
 
@@ -146,32 +129,64 @@ export async function searchPeople(value: any) {
   return userList;
 }
 
-export async function searchChat(currnetId: any, userId: any) {
+export async function createChat(userId: any, currentId: any) {
   try {
-    const profileData = await db
-      .collection('chats')
-      .where('users', 'in', [[currnetId, userId]])
-      .get();
+    const creator = await db.collection('chats').where('creator', 'in', [userId, currentId]).get();
+    const member = await db.collection('chats').where('member', 'in', [userId, currentId]).get();
+    let chatId = '';
+    creator.forEach((doc1) => {
+      const creatorUser = doc1.data().creator;
+      const memberUser = doc1.data().member;
+      member.forEach((doc2) => {
+        if (doc2.data().creator === creatorUser && doc2.data().member === memberUser) {
+          chatId = doc2.id;
+        }
+      });
+    });
 
-    console.log(profileData)
-  } catch (error) {}
+    if (chatId) {
+      return {
+        new: false,
+        id: chatId,
+      };
+    } else {
+      const chatId = await db.collection('chats').add({
+        posts: null,
+        creator: userId,
+        members: { currentId, userId },
+      });
+      return {
+        new: true,
+        id: chatId,
+      };
+    }
+  } catch (error) {
+    console.log(error);
+  }
+}
 
-  // const postList = profileData.data()?.posts;
-  // const postsPromises = postList.map(async (item: any) => {
-  //   const post = await db.collection('users').doc(item).get();
-  //   const postsData = await post.data();
-  //   return {
-  //     text: item,
-  //     avatar: postsData?.profile.avatar,
-  //     firstName: postsData?.profile.firstName,
-  //   };
-  // });
+export async function addChatForUser(chatId: any, currentId: any, userId: any) {
+  db.collection('users')
+    .doc(currentId)
+    .update({
+      chats: array.arrayUnion(chatId),
+    });
+  db.collection('users')
+    .doc(userId)
+    .update({
+      chats: array.arrayUnion(chatId),
+    });
+}
 
-  // const result = await Promise.all(postsPromises);
-
-  // return result;
-  // db.collection("cities").doc("SF")
-  //   .onSnapshot((doc) => {
-  //       console.log("Current data: ", doc.data());
-  //   });
+export async function getChatsData({ id }: any) {
+  console.log(id);
+  const doc = await db.collection('chats')
+    .where('member', 'array-contains', id)
+    .onSnapshot((querySnapshot) => {
+      var chats: any = [];
+      querySnapshot.forEach((doc) => {
+        chats.push(doc.data());
+      });
+      console.log(chats);
+    });
 }

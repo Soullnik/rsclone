@@ -1,7 +1,6 @@
 import { takeEvery, put, call } from 'redux-saga/effects';
 import { push } from 'connected-react-router';
 import { confirmedSignIn, confirmedSignUp, confirmedSignOut, authDataAdd } from '../../../api/auth';
-import { fetchFriendsData } from '../../../api/user';
 import { authActions, appActions } from '../../actions';
 import { authType } from '../../actionsTypes';
 import { delay } from '../../../utils/helpers';

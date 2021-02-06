@@ -39,9 +39,9 @@
         "error": "Please input your First name!"
       },
       "gender": {
-        "male": "Male",
+        "male": "male",
         "select": "Select gender",
-        "female": "Female",
+        "female": "female",
         "message": "Please add your gender!"
       },
       "submit": "Create user"

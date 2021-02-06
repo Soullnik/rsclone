@@ -5,18 +5,23 @@ import { Header, Footer, Side } from '../../layout';
 import './style.scss';
 import { useDispatch, useSelector } from 'react-redux';
 import { requestUserData } from '../../redux/actions/user';
+import { requestChatData } from '../../redux/actions/messanger';
 
 const Content: React.FC = () => {
   const dispatch = useDispatch();
   const id = useSelector((state: any) => state.app.userId);
-  const currentid = useSelector((state: any) => state.app.currnetUser);
+  const currentid = useSelector((state: any) => state.app.currentUser);
   const { Content } = Layout;
 
   useEffect(() => {
-    dispatch(requestUserData({currentid, id}));
+    dispatch(requestUserData({ currentid, id }));
   }, [currentid]);
 
-  const Messenger = lazy(() => import('../../pages/messenger'));
+  useEffect(() => {
+    dispatch(requestChatData({ id }));
+  }, [ ]);
+
+  const MessengerList = lazy(() => import('../../pages/messenger'));
   const News = lazy(() => import('../../pages/news'));
   const Profile = lazy(() => import('../../pages/profile'));
 
@@ -28,8 +33,8 @@ const Content: React.FC = () => {
         <Content className="main">
           <Suspense fallback={<Spin size="large" style={{ margin: 'auto' }} />}>
             <Switch>
-              <Route path={`/content/profile/:id`} render={() => <Profile />} />
-              <Route path="/content/messenger" component={Messenger} />
+              <Route path={`/content/profile/:id`} component={Profile} />
+              <Route path="/content/messenger/" component={MessengerList} />
               <Route path="/content/news" component={News} />
               <Redirect to={`/content/profile/:id}`} />
             </Switch>

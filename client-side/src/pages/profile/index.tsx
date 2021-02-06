@@ -13,6 +13,7 @@ import {
   DatePicker,
   Button,
   Space,
+  Select,
 } from 'antd';
 import { useDispatch, useSelector } from 'react-redux';
 import { userActions } from '../../redux/actions';
@@ -27,25 +28,24 @@ import './style.scss';
 import moment from 'moment';
 import { Link } from 'react-router-dom';
 
-const { changeUserProfile, sendMessage, addFriend } = userActions;
+const { changeUserProfileInfo, sendMessage, addFriend } = userActions;
 const { Paragraph } = Typography;
 const { Meta } = Card;
 
 const Profile: React.FC = () => {
   const { t } = useTranslation();
   const dispath = useDispatch();
-  const currentFriends = useSelector((state: any) => state.user.currentFriends);
   const friends = useSelector((state: any) => state.user.friends);
   const editable = useSelector((state: any) => state.user.editable);
   const loading = useSelector((state: any) => state.user.loading);
   const userId = useSelector((state: any) => state.app.userId);
-  const currnetId = useSelector((state: any) => state.app.currnetUser);
+  const currentId = useSelector((state: any) => state.app.currentUser);
   const profileData = useSelector((state: { user: any }) => state.user.profile);
 
-  const [friendButton, setFriendButton] = useState(true)
+  const [friendButton, setFriendButton] = useState(true);
 
-  const changeData = (value: any, type: any) => {
-    dispath(changeUserProfile({ value, type, userId }));
+  const onChangeInfoHandler = (value: any, type: any) => {
+    dispath(changeUserProfileInfo({ value, type, userId }));
   };
 
   if (!loading) {
@@ -57,7 +57,7 @@ const Profile: React.FC = () => {
             title={t('content.friends')}
             loading={false}
           >
-            {currentFriends.map((item: any) => {
+            {friends.map((item: any) => {
               return (
                 <Link to={`/content/profile/${item.id}`} key={item.id}>
                   <Card.Grid className="friend-card">
@@ -75,7 +75,7 @@ const Profile: React.FC = () => {
           <Row wrap gutter={[16, 16]}>
             <Col
               style={{ minHeight: '300px', margin: '0 auto' }}
-              xs={12}
+              xs={24}
               sm={10}
               md={10}
               lg={10}
@@ -86,11 +86,11 @@ const Profile: React.FC = () => {
                 <ProfileAvatar url={profileData.avatar} />
                 {editable || (
                   <React.Fragment>
-                    {!(friends.findIndex((item: any) => item.id == currnetId) + 1) && friendButton && (
+                    {!(friends.findIndex((item: any) => item.id == userId) + 1) && friendButton && (
                       <Button
                         onClick={() => {
-                          setFriendButton(false)
-                          dispath(addFriend({ currnetId, userId }));
+                          setFriendButton(false);
+                          dispath(addFriend({ currentId, userId }));
                         }}
                       >
                         {t('content.addFriend')}
@@ -98,7 +98,7 @@ const Profile: React.FC = () => {
                     )}
                     <Button
                       onClick={() => {
-                        dispath(sendMessage({ currnetId, userId }));
+                        dispath(sendMessage({ currentId, userId }));
                       }}
                     >
                       {t('content.send')}
@@ -109,7 +109,7 @@ const Profile: React.FC = () => {
             </Col>
             <Col xs={24} sm={14} md={14} lg={14} xl={14} xxl={14}>
               <Divider orientation="right" plain>
-              {t('content.info')}
+                {t('content.info')}
               </Divider>
               <Form>
                 <Form.Item label={t('content.profile.age')}>
@@ -117,8 +117,8 @@ const Profile: React.FC = () => {
                     disabled={!editable}
                     value={profileData.age ? moment(profileData.age.toDate(), 'DD/MM/YYYY') : null}
                     bordered={false}
-                    onChange={(date: any, dateString: string) => {
-                      changeData(
+                    onChange={(date: any) => {
+                      onChangeInfoHandler(
                         date
                           ? firebase.firestore.Timestamp.fromDate(new Date(date.format()))
                           : null,
@@ -128,26 +128,25 @@ const Profile: React.FC = () => {
                   />
                 </Form.Item>
                 <Form.Item label={t('content.profile.gender')}>
-                  <Paragraph
-                    editable={
-                      editable && {
-                        onChange: (value) => {
-                          const val = value;
-                          changeData(val, 'gender');
-                        },
-                      }
-                    }
+                  <Select
+                    value={profileData.gender}
+                    style={{ width: 120 }}
+                    bordered={false}
+                    disabled={!editable}
+                    onSelect={(value: any) => {
+                      onChangeInfoHandler(value, 'gender');
+                    }}
                   >
-                    {profileData.gender || ''}
-                  </Paragraph>
+                    <Select.Option value="male">{t('auth.signup.gender.male')}</Select.Option>
+                    <Select.Option value="female">{t('auth.signup.gender.female')}</Select.Option>
+                  </Select>
                 </Form.Item>
                 <Form.Item label={t('content.profile.city')}>
                   <Paragraph
                     editable={
                       editable && {
                         onChange: (value) => {
-                          const val = value;
-                          changeData(val, 'city');
+                          onChangeInfoHandler(value, 'city');
                         },
                       }
                     }
@@ -160,8 +159,7 @@ const Profile: React.FC = () => {
                     editable={
                       editable && {
                         onChange: (value) => {
-                          const val = value;
-                          changeData(val, 'about');
+                          onChangeInfoHandler(value, 'about');
                         },
                       }
                     }
@@ -186,7 +184,7 @@ const Profile: React.FC = () => {
       </Row>
     );
   } else {
-    return <Spin size="large" />;
+    return <Spin style={{margin: 'auto'}} size="large" />;
   }
 };
 

@@ -36,7 +36,6 @@ export async function authDataAdd(id: string, action: TypeSignUp) {
   db.collection('users')
     .doc(id)
     .set({
-      
       profile: {
         firstName: action.firstName.toLowerCase(),
         lastName: action.lastName.toLowerCase(),
@@ -48,8 +47,7 @@ export async function authDataAdd(id: string, action: TypeSignUp) {
       },
       friends: [],
       posts: [],
-      openChats: null,
-      closeChats: null,
+      chats: [],
       images: [],
     });
 }

@@ -2,60 +2,97 @@ import { userType } from '../../actionsTypes';
 import { Types } from '../../../schemas';
 
 const {
-  GET_CLOSE_CHATS_DATA,
-  GET_OPEN_CHATS_DATA,
-  GET_AUDIO_DATA,
   REQUEST_USER_DATA,
-  GET_IMAGE_DATA,
-  GET_PROFILE_DATA,
+  SET_FRIENDS_DATA,
+  SET_IMAGE_DATA,
+  SET_POST_DATA,
+  SET_USER_DATA,
+  SET_INFO_DATA,
   LOAD_USER_DATA,
   UPLOAD_USER_DATA,
   EDITABLE_USER_DATA,
   DELETE_USER_DATA,
   CHOISE_USER_AVATAR,
-  CHANGE_USER_PROFILE,
+  CHANGE_USER_PROFILE_INFO,
   ADD_TO_FRIENDS,
-  UPDATE_FRIENDS,
   OPEN_CHAT_WITH_USER,
-  LOAD_FRIENDS,
   ADD_POST,
-  LOAD_POST,
 } = userType;
 
-export function getProfileData(data: Types.TypeUser) {
-  return {
-    type: GET_PROFILE_DATA,
-    payload: data,
-  };
-}
-
-export function editableTurnOn(value: boolean) {
-  return {
-    type: EDITABLE_USER_DATA,
-    payload: value,
-  };
-}
-
-export function loadUserData(value: boolean) {
+export function loadUserDataIndicator(value: boolean) {
   return {
     type: LOAD_USER_DATA,
     payload: value,
   };
 }
 
-export function getAudioData(data: Array<string>) {
+//REQUESTS
+
+export const requestUserData = (data: any) => {
   return {
-    type: GET_AUDIO_DATA,
+    type: REQUEST_USER_DATA,
+    payload: data,
+  };
+};
+
+//REQUESTS
+
+//SET_DATA
+
+export function setUserData(data: any) {
+  return {
+    type: SET_USER_DATA,
     payload: data,
   };
 }
 
-export function getImageData(data: Array<string>) {
+export function setImageData(data: Array<string>) {
   return {
-    type: GET_IMAGE_DATA,
+    type: SET_IMAGE_DATA,
     payload: data,
   };
 }
+
+export const setPostsData = (payload: any) => {
+  return {
+    type: SET_POST_DATA,
+    payload: payload,
+  };
+};
+
+export function setFriendsData(payload: any) {
+  return {
+    type: SET_FRIENDS_DATA,
+    payload: payload,
+  };
+}
+
+export function setInfoData(payload: any) {
+  return {
+    type: SET_INFO_DATA,
+    payload: payload,
+  };
+}
+
+//SET_DATA
+
+//CHANGER_DATA
+
+export function changeEditable(value: boolean) {
+  return {
+    type: EDITABLE_USER_DATA,
+    payload: value,
+  };
+}
+
+export const changeUserProfileInfo = (payload: any) => {
+  return {
+    type: CHANGE_USER_PROFILE_INFO,
+    payload: payload,
+  };
+};
+
+//CHANGER_DATA
 
 export function uploadUserData(payload: any) {
   return {
@@ -71,42 +108,9 @@ export function deleteUserData(payload: any) {
   };
 }
 
-export const signInComplete = () => {
-  return {
-    type: GET_CLOSE_CHATS_DATA,
-  };
-};
-
-export const signOutComplete = () => {
-  return {
-    type: GET_OPEN_CHATS_DATA,
-  };
-};
-
-export const requestUserData = (data: any) => {
-  return {
-    type: REQUEST_USER_DATA,
-    payload: data,
-  };
-};
-
-export const openOtherProfile = (id: any) => {
-  return {
-    type: REQUEST_USER_DATA,
-    payload: id,
-  };
-};
-
 export const postUserAvatar = (payload: any) => {
   return {
     type: CHOISE_USER_AVATAR,
-    payload: payload,
-  };
-};
-
-export const changeUserProfile = (payload: any) => {
-  return {
-    type: CHANGE_USER_PROFILE,
     payload: payload,
   };
 };
@@ -125,30 +129,9 @@ export function addFriend(payload: any) {
   };
 }
 
-export function updateFriendList(payload: any) {
-  return {
-    type: UPDATE_FRIENDS,
-    payload: payload,
-  };
-}
-
-export const loadFriendsInit = (data: any) => {
-  return {
-    type: LOAD_FRIENDS,
-    payload: data,
-  };
-};
-
 export const sendPost = (payload: any) => {
   return {
     type: ADD_POST,
-    payload: payload,
-  };
-};
-
-export const loadPosts = (payload: any) => {
-  return {
-    type: LOAD_POST,
     payload: payload,
   };
 };

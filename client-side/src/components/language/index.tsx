@@ -1,4 +1,5 @@
 import React from 'react';
+import moment from 'moment';
 import { useTranslation } from 'react-i18next';
 import { Menu, Dropdown } from 'antd';
 import { GlobalOutlined } from '@ant-design/icons';
@@ -9,6 +10,7 @@ const Language = (props: any) => {
   const {className, color} = props
 
   const handleClick = (lang: string) => {
+    moment.locale(lang)
     i18n.changeLanguage(lang);
   };
 

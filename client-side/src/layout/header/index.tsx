@@ -8,7 +8,7 @@ import Language from '../../components/language';
 
 import './style.scss';
 import { Link } from 'react-router-dom';
-import { loadUserData } from '../../redux/actions/user';
+// import { getUserProfile } from '../../redux/actions/user';
 
 const { signOut } = authActions;
 const { searchUser, changeUser } = appActions;

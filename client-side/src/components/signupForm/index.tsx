@@ -6,6 +6,7 @@ import { Types } from '../../schemas';
 import { Link } from 'react-router-dom';
 import { authActions } from '../../redux/actions';
 import { useTranslation } from 'react-i18next';
+import { capitalize } from '../../utils/helpers';
 import './styles.scss';
 
 const { signUp } = authActions;
@@ -77,7 +78,7 @@ const SignUpForm = () => {
               max: 12,
               required: true,
               message: t('auth.signup.password.message'),
-            },          
+            },
           ]}
           hasFeedback
         >
@@ -97,7 +98,7 @@ const SignUpForm = () => {
               validator(_, value) {
                 if (!value || getFieldValue('password') === value) {
                   return Promise.resolve();
-                }           
+                }
 
                 return Promise.reject(t('auth.signup.confirmed.error'));
               },
@@ -146,15 +147,18 @@ const SignUpForm = () => {
         >
           <Input />
         </Form.Item>
-        <Form.Item name="gender" rules={[{ required: true, message: t('auth.signup.gender.message') }]}>
+        <Form.Item
+          name="gender"
+          rules={[{ required: true, message: t('auth.signup.gender.message') }]}
+        >
           <Select placeholder={t('auth.signup.gender.select')}>
-            <Option value="male">{t('auth.signup.gender.male')}</Option>
-            <Option value="female">{t('auth.signup.gender.female')}</Option>
+            <Option value="male">{capitalize(t('auth.signup.gender.male'))}</Option>
+            <Option value="female">{capitalize(t('auth.signup.gender.female'))}</Option>
           </Select>
         </Form.Item>
         <Form.Item>
           <Button type="primary" htmlType="submit" className="signup-form__button">
-          {t('auth.signup.submit')}
+            {t('auth.signup.submit')}
           </Button>
           {t('auth.or')} <Link to="/auth/login">{t('auth.links.signin')}</Link>
         </Form.Item>
