@@ -16,19 +16,20 @@ import {
   Select,
 } from 'antd';
 import { useDispatch, useSelector } from 'react-redux';
-import { userActions } from '../../redux/actions';
+import { userActions, messangerActions } from '../../redux/actions';
 import { capitalize } from '../../utils/helpers';
-import PostsForm from '../../components/postForm';
+import { useTranslation } from 'react-i18next';
+
+import PostContainer from '../../components/postsContainer'
 import PicturesWall from '../../components/picturesWall';
 import ProfileAvatar from '../../components/avatar';
-import Posts from '../../components/postsList';
-import { useTranslation } from 'react-i18next';
 
 import './style.scss';
 import moment from 'moment';
 import { Link } from 'react-router-dom';
 
-const { changeUserProfileInfo, sendMessage, addFriend } = userActions;
+const { changeUserProfileInfo, addFriend } = userActions;
+const { sendMessage } = messangerActions;
 const { Paragraph } = Typography;
 const { Meta } = Card;
 
@@ -47,6 +48,7 @@ const Profile: React.FC = () => {
   const onChangeInfoHandler = (value: any, type: any) => {
     dispath(changeUserProfileInfo({ value, type, userId }));
   };
+
 
   if (!loading) {
     return (
@@ -174,8 +176,7 @@ const Profile: React.FC = () => {
             <Divider orientation="right" plain>
               {t('content.postFrom.title')}
             </Divider>
-            <Posts />
-            {editable ? <PostsForm /> : ''}
+            <PostContainer />
           </div>
         </Col>
         <Col className="profile__gallery" xs={24} sm={24} md={24} lg={24} xl={6} xxl={8}>
@@ -184,7 +185,7 @@ const Profile: React.FC = () => {
       </Row>
     );
   } else {
-    return <Spin style={{margin: 'auto'}} size="large" />;
+    return <Spin style={{ margin: 'auto' }} size="large" />;
   }
 };
 

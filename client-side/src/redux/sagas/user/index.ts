@@ -11,7 +11,6 @@ const {
   DELETE_USER_DATA,
   CHOISE_USER_AVATAR,
   CHANGE_USER_PROFILE_INFO,
-  OPEN_CHAT_WITH_USER,
   ADD_TO_FRIENDS,
   ADD_POST,
 } = userType;
@@ -26,9 +25,6 @@ const {
   postProfilerData,
   postFriendData,
   postPostsData,
-  getChatsData,
-  createChat,
-  addChatForUser,
 } = userAPI;
 const { SEARCH_USER } = appType;
 
@@ -112,17 +108,6 @@ function* warkerAddFriends({ payload }: any) {
   }
 }
 
-function* warkerOpenChat({ payload }: any) {
-  try {
-    const chatId = yield call(createChat, payload.userId, payload.currentId);
-    if (chatId.new) {
-      yield call(addChatForUser, chatId.id, payload.currentId, payload.userId);
-    }
-    yield put(push(`/content/messenger/${chatId.id}`));
-  } catch (error) {
-    yield console.log(error);
-  }
-}
 
 function* warkerPost({ payload }: any) {
   try {
@@ -141,6 +126,5 @@ export function* watchUser() {
   yield takeEvery(CHOISE_USER_AVATAR, warkerUserAvatar);
   yield takeEvery(CHANGE_USER_PROFILE_INFO, warkerUserProfileChanged);
   yield takeEvery(ADD_TO_FRIENDS, warkerAddFriends);
-  yield takeEvery(OPEN_CHAT_WITH_USER, warkerOpenChat);
   yield takeEvery(ADD_POST, warkerPost);
 }

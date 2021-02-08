@@ -1,5 +1,4 @@
 import { userType, appType } from '../../actionsTypes';
-import { CHANGE_USER } from '../../actionsTypes/app';
 
 const initialState = {
   editable: false,

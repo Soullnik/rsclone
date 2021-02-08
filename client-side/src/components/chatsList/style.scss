@@ -1,0 +1,29 @@
+.demo-infinite-container {
+  height: 100%;
+  width: 100%;
+  padding: 8px 24px;
+  overflow: auto;
+  border: 1px solid #e8e8e8;
+  border-radius: 4px;
+}
+.demo-loading-container {
+  position: absolute;
+  bottom: 40px;
+  width: 100%;
+  text-align: center;
+}
+[data-theme='dark'] .demo-infinite-container {
+  border: 1px solid #303030;
+}
+
+.list-chats {
+  padding: 5px;
+  cursor: pointer;
+  transition: all 0.3s;
+  &:hover {
+    background-color: #f5f5f5;
+    box-shadow: 0 1px 2px -2px rgb(0 0 0 / 16%), 0 3px 6px 0 rgb(0 0 0 / 12%), 0 5px 12px 4px rgb(0 0 0 / 9%);
+  }
+}
+
+

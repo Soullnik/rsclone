@@ -15,7 +15,6 @@ const {
   CHOISE_USER_AVATAR,
   CHANGE_USER_PROFILE_INFO,
   ADD_TO_FRIENDS,
-  OPEN_CHAT_WITH_USER,
   ADD_POST,
 } = userType;
 
@@ -114,13 +113,6 @@ export const postUserAvatar = (payload: any) => {
     payload: payload,
   };
 };
-
-export function sendMessage(payload: any) {
-  return {
-    type: OPEN_CHAT_WITH_USER,
-    payload: payload,
-  };
-}
 
 export function addFriend(payload: any) {
   return {

@@ -1,12 +1,11 @@
 import { messangerType } from '../../actionsTypes';
-import { LOCATION_CHANGE } from 'connected-react-router';
 
 const initialState = {
-  loading: true,
+  loading: null,
   chats: [],
 };
 
-const { LOAD_CHATS_DATA } = messangerType;
+const { LOAD_CHATS_DATA, SET_CHATS_DATA } = messangerType;
 
 export const messangerReducer = (state = initialState, actions: { type: string; payload: any }) => {
   switch (actions.type) {
@@ -15,6 +14,11 @@ export const messangerReducer = (state = initialState, actions: { type: string; 
         ...state,
         loading: actions.payload,
       };
+    case SET_CHATS_DATA:
+      return {
+        ...state,
+        chats: actions.payload
+      }
     default:
       return state;
   }
