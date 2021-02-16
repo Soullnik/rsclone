@@ -79,7 +79,6 @@ module.exports = {
       patterns: [
         { from: 'src/locales', to: 'locales' },
         { from: 'src/assets/images', to: 'images' },
-        { from: 'src/assets/icons', to: 'icons' },
       ],
     }),
   ],

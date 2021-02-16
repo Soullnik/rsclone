@@ -15,7 +15,7 @@
   line-height: 50px;
   font-size: 18px;
   &:hover {
-    animation: flip-scale-down-diag-2 linear 1s infinite running;
+    animation: flip-scale-down-diag-2 linear 3s infinite running;
   }
 }
 
@@ -23,12 +23,12 @@
 
 @keyframes flip-scale-down-diag-2 {
   0% {
-    transform: scale(1) rotate3d(-1, 1, 0, 0deg);
+    transform: rotate3d(-1, 1, 0, 0deg);
   }
   50% {
-    transform: scale(0.4) rotate3d(-1, 1, 0, -180deg);
+    transform:  rotate3d(-1, 1, 0, -360deg);
   }
   100% {
-    transform: scale(1) rotate3d(-1, 1, 0, -360deg);
+    transform:  rotate3d(-1, 1, 0, 0deg);
   }
 }

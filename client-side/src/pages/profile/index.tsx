@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import firebase from 'firebase/app';
 import {
   PageHeader,
@@ -15,18 +15,18 @@ import {
   Space,
   Select,
 } from 'antd';
+import moment from 'moment';
+import { Link } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { userActions, messangerActions } from '../../redux/actions';
 import { capitalize } from '../../utils/helpers';
 import { useTranslation } from 'react-i18next';
 
-import PostContainer from '../../components/postsContainer'
+import PostContainer from '../../components/postsContainer';
 import PicturesWall from '../../components/picturesWall';
 import ProfileAvatar from '../../components/avatar';
 
 import './style.scss';
-import moment from 'moment';
-import { Link } from 'react-router-dom';
 
 const { changeUserProfileInfo, addFriend } = userActions;
 const { sendMessage } = messangerActions;
@@ -35,7 +35,7 @@ const { Meta } = Card;
 
 const Profile: React.FC = () => {
   const { t } = useTranslation();
-  const dispath = useDispatch();
+  const dispatch = useDispatch();
   const friends = useSelector((state: any) => state.user.friends);
   const editable = useSelector((state: any) => state.user.editable);
   const loading = useSelector((state: any) => state.user.loading);
@@ -46,9 +46,8 @@ const Profile: React.FC = () => {
   const [friendButton, setFriendButton] = useState(true);
 
   const onChangeInfoHandler = (value: any, type: any) => {
-    dispath(changeUserProfileInfo({ value, type, userId }));
+    dispatch(changeUserProfileInfo({ value, type, userId }));
   };
-
 
   if (!loading) {
     return (
@@ -92,7 +91,7 @@ const Profile: React.FC = () => {
                       <Button
                         onClick={() => {
                           setFriendButton(false);
-                          dispath(addFriend({ currentId, userId }));
+                          dispatch(addFriend({ currentId, userId }));
                         }}
                       >
                         {t('content.addFriend')}
@@ -100,7 +99,7 @@ const Profile: React.FC = () => {
                     )}
                     <Button
                       onClick={() => {
-                        dispath(sendMessage({ currentId, userId }));
+                        dispatch(sendMessage({ currentId, userId }));
                       }}
                     >
                       {t('content.send')}

@@ -1,30 +1,30 @@
 import React, { Suspense, lazy, Fragment, useEffect } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 import { Switch, Route, Redirect } from 'react-router-dom';
 import { Spin, Layout } from 'antd';
 import { Header, Footer, Side } from '../../layout';
-import './style.scss';
-import { useDispatch, useSelector } from 'react-redux';
+
 import { requestUserData } from '../../redux/actions/user';
 import { requestChatsData } from '../../redux/actions/messanger';
+import './style.scss';
 
 const Content: React.FC = () => {
   const dispatch = useDispatch();
-  const id = useSelector((state: any) => state.app.userId);
-  const currentid = useSelector((state: any) => state.app.currentUser);
-  const chats = useSelector((state: any) => state.messanger.chats);
+  const userId = useSelector((state: any) => state.app.userId);
+  const currentId = useSelector((state: any) => state.app.currentUser);
   const { Content } = Layout;
-
-  useEffect(() => {
-    dispatch(requestUserData({ currentid, id }));
-  }, [currentid]);
-
-  useEffect(() => {
-    dispatch(requestChatsData({ id }));
-  }, [chats]);
 
   const MessengerList = lazy(() => import('../../pages/messenger'));
   const News = lazy(() => import('../../pages/news'));
   const Profile = lazy(() => import('../../pages/profile'));
+
+  useEffect(() => {
+    dispatch(requestUserData({ currentId, userId }));
+  }, [currentId]);
+
+  useEffect(() => {
+    dispatch(requestChatsData({ userId }));
+  }, []);
 
   return (
     <Fragment>
@@ -37,7 +37,7 @@ const Content: React.FC = () => {
               <Route path={`/content/profile/:id`} component={Profile} />
               <Route path="/content/messenger" component={MessengerList} />
               <Route path="/content/news" component={News} />
-              <Redirect to={`/content/profile/${id}`} />
+              <Redirect to={`/content/profile/${userId}`} />
             </Switch>
           </Suspense>
         </Content>

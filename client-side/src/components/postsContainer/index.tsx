@@ -7,11 +7,9 @@ import { useTranslation } from 'react-i18next';
 import { userActions } from '../../redux/actions';
 import firebase from 'firebase/app';
 
-
-
 const PostContainer = () => {
   const dispatch = useDispatch();
-  const ulRef = useRef<HTMLUListElement | null>(null);
+  const ulContainerRef = useRef<HTMLDivElement | null >(null);
   const userId = useSelector((state: any) => state.app.userId);
   const editable = useSelector((state: any) => state.user.editable);
   const profileData = useSelector((state: { user: any }) => state.user.profile);
@@ -29,7 +27,7 @@ const PostContainer = () => {
       ),
     };
   });
-  
+
   const { sendPost } = userActions;
   const [form] = Form.useForm();
 
@@ -47,24 +45,21 @@ const PostContainer = () => {
   };
 
   useEffect(() => {
-    if (ulRef.current !== null) {
-      //dispatch(fn(ulRef.current.scrollHeight))
-      ulRef.current.addEventListener('scroll', (event) => {
-        console.log('был скролл');
-      });
-      console.log(ulRef.current.scrollHeight);
-      console.log(ulRef.current.scrollTop);
-      ulRef.current.scrollLeft = ulRef.current.scrollHeight + 1;
-      console.log(ulRef.current.scrollLeft);
+    if (ulContainerRef.current) {
+      ulContainerRef.current.scrollTop = ulContainerRef.current.scrollHeight;
     }
-  }, [ulRef.current?.scrollTop]);
+  }, [posts]);
 
   return (
     <React.Fragment>
-      <div className="ant-list ant-list-split comment-list" style={{ maxHeight: '170px' }}>
+      <div
+        ref={ulContainerRef}
+        className="ant-list ant-list-split comment-list"
+        style={{ maxHeight: '170px' }}
+      >
         <div className="ant-spin-nested-loading">
           <div className="ant-spin-container">
-            <ul ref={ulRef} className="ant-list-items">
+            <ul className="ant-list-items posts-list">
               {data.map((item: any, index: any) => {
                 return (
                   <li key={index}>
@@ -77,7 +72,6 @@ const PostContainer = () => {
                   </li>
                 );
               })}
-              {/* <div style={{ float: 'left', clear: 'both' }}></div> */}
             </ul>
           </div>
         </div>

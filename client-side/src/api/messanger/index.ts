@@ -1,29 +1,22 @@
-import { db, array } from '../../configs/configFirebase';
+import { eventChannel, END } from 'redux-saga';
+import { db, array, collectionId } from '../../configs/configFirebase';
+
+import { capitalize } from '../../utils/helpers';
 
 export async function createChat(userId: any, currentId: any) {
   try {
-    const creator = await db.collection('chats').where('creator', 'in', [userId, currentId]).get();
-    const member = await db.collection('chats').where('member', 'in', [userId, currentId]).get();
-    let chatId = null;
-    creator.forEach((doc1) => {
-      const creatorUser = doc1.data().creator;
-      const memberUser = doc1.data().member;
-      member.forEach((doc2) => {
-        if (doc2.data().creator === creatorUser && doc2.data().member === memberUser) {
-          chatId = doc2.id;
-        }
-      });
-    });
-
-    if (chatId) {
+    const userChats = await (await db.collection('users').doc(userId).get()).data()?.chats;
+    const currentUserChats = await (await db.collection('users').doc(currentId).get()).data()
+      ?.chats;
+    const chatFound = userChats.filter((el: any) => currentUserChats.indexOf(el) > -1);
+    if (chatFound.length) {
       return {
         new: false,
-        id: chatId,
+        id: chatFound[0],
       };
     } else {
       const chatId = await db.collection('chats').add({
         posts: [],
-        creator: userId,
         members: [currentId, userId],
       });
       return {
@@ -49,34 +42,63 @@ export async function addChatForUser(chatId: any, currentId: any, userId: any) {
     });
 }
 
-export async function getChatsData({ id }: any) {
-  let chats: any;
-  db.collection('chats')
-    .where('members', 'array-contains', id)
-    .onSnapshot((querySnapshot) => {
-      querySnapshot.forEach(async (doc) => {
-        const memberUser = doc
-          .data()
-          .members.filter((item: string) => item !== id)
-          .join();
-        const memberData = await (await db.collection('users').doc(memberUser).get()).data();
-        if (memberData) {
-          await function addForChats() {
-            chats = [];
-            chats.push({
-              id: doc.id,
-              lastPost: doc.data().posts || [],
-              avatar:
-                memberData.profile.avatar ||
-                'https://zos.alipayobjects.com/rmsportal/ODTLcjxAfvqbxHnVXCYX.png',
-              name: `${memberData.profile.firstName} ${memberData.profile.lastName}`,
-            });
-          };
-        }
-      });
-    });
+export async function getChatsList({ userId }: { userId: string }) {
+  return await (await db.collection('users').doc(userId).get()).data()?.chats;
+}
 
-  if (chats) {
-    return chats;
-  }
+export async function getChatsData({ userId }: { userId: string }, chatsList: any) {
+  return eventChannel((emitter: any) => {
+    db.collection('chats')
+      .where(collectionId, 'in', chatsList)
+      .onSnapshot(async (chats) => {
+        const array = chats.docs.map(async (item) => {
+          const lastPostData = item.data()?.posts[item.data()?.posts.length - 1];
+          const lastPostUser =
+            lastPostData !== undefined
+              ? await (await db.collection('users').doc(lastPostData.author).get()).data()
+              : null;
+          const memberData = await (
+            await db
+              .collection('users')
+              .doc(
+                item.data()?.members.find((item: string) => {
+                  return item !== userId;
+                })
+              )
+              .get()
+          ).data();
+          if (lastPostUser) {
+            return {
+              id: item.id,
+              lastPost: {
+                ...lastPostData,
+                author: `${capitalize(lastPostUser?.profile.firstName)} ${capitalize(
+                  lastPostUser?.profile.lastName
+                )}`,
+                avatar: lastPostUser?.profile.avatar,
+              },
+              avatar:
+                memberData?.profile.avatar ||
+                'https://zos.alipayobjects.com/rmsportal/ODTLcjxAfvqbxHnVXCYX.png',
+              name: `${capitalize(memberData?.profile.firstName)} ${capitalize(
+                memberData?.profile.lastName
+              )}`,
+            };
+          } else {
+            return {
+              id: item.id,
+              lastPost: {},
+              avatar:
+                memberData?.profile.avatar ||
+                'https://zos.alipayobjects.com/rmsportal/ODTLcjxAfvqbxHnVXCYX.png',
+              name: `${capitalize(memberData?.profile.firstName)} ${capitalize(
+                memberData?.profile.lastName
+              )}`,
+            };
+          }
+        });
+        emitter(await Promise.all(array))
+      });
+    return () => {};
+  });
 }

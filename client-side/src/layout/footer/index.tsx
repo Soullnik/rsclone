@@ -1,16 +1,9 @@
-import React, { useState } from 'react';
-import { useTranslation } from 'react-i18next';
-import { Layout, Avatar, Space } from 'antd';
-import { useSelector } from 'react-redux';
+import React from 'react';
+import { Layout} from 'antd';
 
 import './style.scss';
 
 const Footer = () => {
-  const [vagimSize, setVadimSize] = useState(50);
-  const [nikolaySize, setNikolaySize] = useState(50);
-  const id = useSelector((state: any) => state.app.userId);
-  const { t } = useTranslation();
-
   const { Footer } = Layout;
 
   return (
@@ -23,8 +16,6 @@ const Footer = () => {
         backgroundColor: 'white',
       }}
     >
-      <Space>
-        <Avatar.Group>
           <a
             href="https://github.com/Soullnik"
             target="_blank"
@@ -33,11 +24,6 @@ const Footer = () => {
           >
             <img src="/images/nikolayGit.jpg" />
           </a>
-        </Avatar.Group>
-        <a target="_blank" className="rsschool-link" href="https://rs.school/js/">
-          <img className="rsschool-image" src="/icons/rs_school_js.svg" alt="" />
-        </a>
-      </Space>
     </Footer>
   );
 };

@@ -41,13 +41,12 @@ const {
 function* warkerUserData({ payload }: any) {
   try {
     yield put(loadUserDataIndicator(true));
-    const userData = yield call(getUserData, payload.currentid);
-    const images = yield call(getStorageData, payload.currentid, 'images');
+    const userData = yield call(getUserData, payload.currentId);
+    const images = yield call(getStorageData, payload.currentId, 'images');
     const friends = yield call(getFriendsData, userData.friends);
-    payload.id === payload.currentid
+    payload.userId === payload.currentId
       ? yield put(changeEditable(true))
       : yield put(changeEditable(false));
-      
     yield put(setUserData(userData));
     yield put(setFriendsData(friends));
     yield put(setImageData(images));

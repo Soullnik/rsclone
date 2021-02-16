@@ -47,8 +47,7 @@ const Header = () => {
                         <Link to={`/content/profile/${item.id}`}>
                           <Space>
                             <Avatar src={<Image src={item.avatar} />} />
-                            <span>{item.firstName}</span>
-                            <span>{item.lastName}</span>
+                            <span>{`${item.firstName} ${item.lastName}`}</span>
                           </Space>
                         </Link>
                       </Menu.Item>

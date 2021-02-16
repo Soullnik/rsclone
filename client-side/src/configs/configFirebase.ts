@@ -16,5 +16,6 @@ firebase.initializeApp({
 export const db = firebase.firestore();
 export const auth = firebase.auth();
 export const storage = firebase.storage().ref();
+export const collectionId = firebase.firestore.FieldPath.documentId()
 export const time = firebase.firestore.Timestamp
 export const array = firebase.firestore.FieldValue

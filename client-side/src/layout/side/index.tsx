@@ -12,6 +12,7 @@ const { useBreakpoint } = Grid;
 
 const Side = () => {
   const id = useSelector((state: any) => state.app.userId);
+  const currentPage = useSelector((state: any) => state.app.currentPage);
   const screens = useBreakpoint();
   const { t } = useTranslation();
   const [collapsed, setCollapsed] = useState(false);
@@ -23,17 +24,18 @@ const Side = () => {
     <Menu
         theme="dark"
         mode="inline"
-        defaultSelectedKeys={['1']}
+        defaultSelectedKeys={['profile']}
+        activeKey={currentPage}
         style={{ height: '100%', borderRight: 0 }}
       >
         <SubMenu key="sub1" title={<LogoIcon/>}>
-          <Menu.Item key="1">
+          <Menu.Item key="profile">
             <Link to={`/content/profile/${id}`}> {t('side.profile')}</Link>
           </Menu.Item>
-          <Menu.Item key="2">
+          <Menu.Item key="messenger">
             <Link to={'/content/messenger'}>{t('side.mess')}</Link>
           </Menu.Item>
-          <Menu.Item key="3">
+          <Menu.Item key="news">
             <Link to={'/content/news'}> {t('side.news')}</Link>
           </Menu.Item>
         </SubMenu>

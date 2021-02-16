@@ -39,7 +39,7 @@ const Chat = () => {
 
   return (
     <Row gutter={0} align="bottom" className="chat">
-      <Col span={24} >{comments.length > 0 && <MessageList comments={comments} />}</Col>
+      <Col span={24} >{comments.length > 0 && <MessageList />}</Col>
       <Col span={24}>
         <MessageEditor
           onChange={handleChange}

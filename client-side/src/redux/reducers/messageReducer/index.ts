@@ -3,6 +3,7 @@ import { messangerType } from '../../actionsTypes';
 const initialState = {
   loading: null,
   chats: [],
+  chatMessage: []
 };
 
 const { LOAD_CHATS_DATA, SET_CHATS_DATA } = messangerType;
@@ -23,3 +24,5 @@ export const messangerReducer = (state = initialState, actions: { type: string; 
       return state;
   }
 };
+
+
